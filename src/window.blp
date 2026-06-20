@@ -194,36 +194,52 @@ template $DrillWindow : Adw.ApplicationWindow {
               row-spacing: 8;
               homogeneous: false;
 
-              Gtk.Label {
-                label: _("Rust");
+              Gtk.FlowBoxChild {
+                focusable: false;
 
-                styles [
-                  "language-pill",
-                ]
+                Gtk.Label {
+                  label: _("Rust");
+
+                  styles [
+                    "language-pill",
+                  ]
+                }
               }
 
-              Gtk.Label {
-                label: _("TOML");
+              Gtk.FlowBoxChild {
+                focusable: false;
 
-                styles [
-                  "language-pill",
-                ]
+                Gtk.Label {
+                  label: _("TOML");
+
+                  styles [
+                    "language-pill",
+                  ]
+                }
               }
 
-              Gtk.Label {
-                label: _("Blueprint");
+              Gtk.FlowBoxChild {
+                focusable: false;
 
-                styles [
-                  "language-pill",
-                ]
+                Gtk.Label {
+                  label: _("Blueprint");
+
+                  styles [
+                    "language-pill",
+                  ]
+                }
               }
 
-              Gtk.Label {
-                label: _("Meson");
+              Gtk.FlowBoxChild {
+                focusable: false;
 
-                styles [
-                  "language-pill",
-                ]
+                Gtk.Label {
+                  label: _("Meson");
+
+                  styles [
+                    "language-pill",
+                  ]
+                }
               }
             }
           }
