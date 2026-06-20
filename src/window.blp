@@ -375,8 +375,13 @@ template $DrillWindow : Adw.ApplicationWindow {
 
           [overlay]
           Gtk.Box onion_core {
+            orientation: horizontal;
             halign: center;
             valign: center;
+            hexpand: false;
+            vexpand: false;
+            width-request: 84;
+            height-request: 84;
 
             styles [
               "onion-core",
@@ -388,6 +393,8 @@ template $DrillWindow : Adw.ApplicationWindow {
               pixel-size: 38;
               halign: center;
               valign: center;
+              hexpand: true;
+              vexpand: true;
             }
           }
         }
