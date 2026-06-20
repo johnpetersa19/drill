@@ -374,12 +374,9 @@ template $DrillWindow : Adw.ApplicationWindow {
           }
 
           [overlay]
-          Gtk.Box onion_core {
-            orientation: horizontal;
+          Gtk.Fixed onion_core {
             halign: center;
             valign: center;
-            hexpand: false;
-            vexpand: false;
             width-request: 84;
             height-request: 84;
 
@@ -388,26 +385,13 @@ template $DrillWindow : Adw.ApplicationWindow {
               "onion-core-idle",
             ]
 
-            Gtk.Overlay {
-              hexpand: true;
-              vexpand: true;
+            Gtk.Image {
+              icon-name: "text-x-generic-symbolic";
+              pixel-size: 38;
 
-              child: Gtk.Box {
-                hexpand: true;
-                vexpand: true;
-              };
-
-              [overlay]
-              Gtk.Image {
-                icon-name: "text-x-generic-symbolic";
-                pixel-size: 38;
-                halign: center;
-                valign: center;
-
-                styles [
-                  "onion-file-icon",
-                ]
-              }
+              styles [
+                "onion-file-icon",
+              ]
             }
           }
         }
