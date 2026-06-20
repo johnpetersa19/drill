@@ -1,11 +1,30 @@
 pkgdatadir = get_option('prefix') / get_option('datadir') / meson.project_name()
 gnome = import('gnome')
 
+blueprint_compiler = find_program('blueprint-compiler')
+
+blueprints = custom_target(
+  'blueprints',
+  input: files(
+    'window.blp',
+    'shortcuts-dialog.blp',
+  ),
+  output: '.',
+  command: [
+    blueprint_compiler,
+    'batch-compile',
+    '@OUTPUT@',
+    meson.current_source_dir(),
+    '@INPUT@',
+  ],
+)
+
 gnome.compile_resources('drill',
   'drill.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
+  dependencies: blueprints,
 )
 
 conf = configuration_data()
