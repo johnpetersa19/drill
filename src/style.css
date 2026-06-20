@@ -1,0 +1,189 @@
+.reading-panel {
+  background: transparent;
+}
+
+.layers-panel {
+  background: transparent;
+}
+
+.drill-card {
+  padding: 18px;
+  border-radius: 18px;
+  background-color: @card_bg_color;
+  box-shadow: 0 1px 3px alpha(black, 0.12);
+}
+
+.card-icon {
+  color: @accent_bg_color;
+}
+
+.read-dot {
+  min-width: 14px;
+  min-height: 14px;
+  border-radius: 999px;
+}
+
+.read-dot-idle {
+  background-color: @borders;
+  box-shadow: none;
+}
+
+.read-dot-reading {
+  background-color: @accent_bg_color;
+  animation-name: drill-read-pulse;
+  animation-duration: 1100ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.read-dot-done {
+  background-color: @success_color;
+  box-shadow: 0 0 10px alpha(@success_color, 0.65);
+  animation-name: drill-read-done;
+  animation-duration: 360ms;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 1;
+}
+
+.read-dot-error {
+  background-color: @error_color;
+  box-shadow: 0 0 10px alpha(@error_color, 0.65);
+}
+
+.language-pill {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background-color: alpha(@accent_bg_color, 0.12);
+  color: @accent_color;
+  font-weight: 600;
+}
+
+.onion-ring {
+  border-radius: 999px;
+  background-color: transparent;
+  border: 2px solid alpha(@accent_bg_color, 0.28);
+}
+
+.onion-ring-5 {
+  min-width: 320px;
+  min-height: 320px;
+}
+
+.onion-ring-4 {
+  min-width: 260px;
+  min-height: 260px;
+}
+
+.onion-ring-3 {
+  min-width: 200px;
+  min-height: 200px;
+}
+
+.onion-ring-2 {
+  min-width: 140px;
+  min-height: 140px;
+}
+
+.onion-core {
+  min-width: 84px;
+  min-height: 84px;
+  border-radius: 999px;
+  background-color: @card_bg_color;
+  box-shadow: 0 2px 8px alpha(black, 0.18);
+}
+
+.onion-core-idle {
+  color: @borders;
+}
+
+.onion-core-reading {
+  color: @accent_color;
+  animation-name: drill-core-pulse;
+  animation-duration: 1300ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.onion-core-done {
+  color: @success_color;
+  box-shadow: 0 0 24px alpha(@success_color, 0.35);
+}
+
+.onion-layer-active {
+  border-color: @accent_bg_color;
+  box-shadow: 0 0 18px alpha(@accent_bg_color, 0.45);
+  animation-name: drill-layer-glow;
+  animation-duration: 1400ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.onion-layer-done {
+  border-color: @success_color;
+  box-shadow: 0 0 14px alpha(@success_color, 0.35);
+}
+
+@keyframes drill-read-pulse {
+  0% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 0 alpha(@accent_bg_color, 0.65);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 16px 5px alpha(@accent_bg_color, 0.55);
+  }
+
+  100% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 0 alpha(@accent_bg_color, 0.65);
+  }
+}
+
+@keyframes drill-read-done {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.6;
+  }
+
+  70% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drill-core-pulse {
+  0% {
+    box-shadow: 0 0 0 alpha(@accent_bg_color, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 28px alpha(@accent_bg_color, 0.48);
+  }
+
+  100% {
+    box-shadow: 0 0 0 alpha(@accent_bg_color, 0);
+  }
+}
+
+@keyframes drill-layer-glow {
+  0% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 alpha(@accent_bg_color, 0);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 22px alpha(@accent_bg_color, 0.5);
+  }
+
+  100% {
+    opacity: 0.65;
+    box-shadow: 0 0 0 alpha(@accent_bg_color, 0);
+  }
+}

@@ -3,27 +3,405 @@ using Adw 1;
 
 template $DrillWindow : Adw.ApplicationWindow {
   title: _("Drill");
-  default-width: 800;
-  default-height: 600;
+  default-width: 1120;
+  default-height: 720;
 
   content: Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
+      title-widget: Adw.WindowTitle {
+        title: _("Drill");
+        subtitle: _("Leitura em camadas");
+      };
+
       [end]
       Gtk.MenuButton {
         primary: true;
         icon-name: "open-menu-symbolic";
-        tooltip-text: _("Main Menu");
+        tooltip-text: _("Menu principal");
         menu-model: primary_menu;
       }
     }
 
-    content: Gtk.Label label {
-      label: _("Hello, World!");
+    content: Gtk.Box {
+      orientation: horizontal;
+      spacing: 0;
+      hexpand: true;
+      vexpand: true;
 
-      styles [
-        "title-1",
-      ]
+      Gtk.ScrolledWindow {
+        hexpand: true;
+        vexpand: true;
+        min-content-width: 520;
+
+        child: Gtk.Box {
+          orientation: vertical;
+          spacing: 16;
+          margin-start: 24;
+          margin-end: 24;
+          margin-top: 24;
+          margin-bottom: 24;
+
+          styles [
+            "reading-panel",
+          ]
+
+          Gtk.Box {
+            orientation: vertical;
+            spacing: 6;
+
+            Gtk.Label {
+              label: _("Painel de leitura");
+              xalign: 0;
+
+              styles [
+                "title-1",
+              ]
+            }
+
+            Gtk.Label {
+              label: _("Escolha um arquivo ou pasta para iniciar a análise visual.");
+              xalign: 0;
+              wrap: true;
+
+              styles [
+                "dim-label",
+              ]
+            }
+          }
+
+          Gtk.Box selected_target_card {
+            orientation: vertical;
+            spacing: 12;
+
+            styles [
+              "card",
+              "drill-card",
+            ]
+
+            Gtk.Box {
+              orientation: horizontal;
+              spacing: 12;
+
+              Gtk.Image {
+                icon-name: "folder-symbolic";
+                pixel-size: 32;
+
+                styles [
+                  "card-icon",
+                ]
+              }
+
+              Gtk.Box {
+                orientation: vertical;
+                spacing: 4;
+                hexpand: true;
+
+                Gtk.Label {
+                  label: _("Arquivo escolhido");
+                  xalign: 0;
+
+                  styles [
+                    "heading",
+                  ]
+                }
+
+                Gtk.Label selected_path_label {
+                  label: _("Nenhum arquivo ou pasta escolhido");
+                  xalign: 0;
+                  ellipsize: end;
+
+                  styles [
+                    "dim-label",
+                  ]
+                }
+              }
+            }
+
+            Gtk.Button choose_target_button {
+              label: _("Escolher arquivo ou pasta");
+              halign: start;
+
+              styles [
+                "pill",
+                "suggested-action",
+              ]
+            }
+          }
+
+          Gtk.Box read_status_card {
+            orientation: vertical;
+            spacing: 12;
+
+            styles [
+              "card",
+              "drill-card",
+            ]
+
+            Gtk.Label {
+              label: _("Leitura");
+              xalign: 0;
+
+              styles [
+                "heading",
+              ]
+            }
+
+            Gtk.Box {
+              orientation: horizontal;
+              spacing: 12;
+
+              Gtk.Box read_status_dot {
+                width-request: 14;
+                height-request: 14;
+                valign: center;
+
+                styles [
+                  "read-dot",
+                  "read-dot-idle",
+                ]
+              }
+
+              Gtk.Label read_status_label {
+                label: _("Aguardando arquivo");
+                xalign: 0;
+                hexpand: true;
+              }
+            }
+          }
+
+          Gtk.Box first_level_card {
+            orientation: vertical;
+            spacing: 12;
+
+            styles [
+              "card",
+              "drill-card",
+            ]
+
+            Gtk.Label {
+              label: _("Primeiro nível");
+              xalign: 0;
+
+              styles [
+                "heading",
+              ]
+            }
+
+            Gtk.FlowBox first_level_flow {
+              selection-mode: none;
+              column-spacing: 8;
+              row-spacing: 8;
+              homogeneous: false;
+
+              Gtk.Label {
+                label: _("Rust");
+
+                styles [
+                  "language-pill",
+                ]
+              }
+
+              Gtk.Label {
+                label: _("TOML");
+
+                styles [
+                  "language-pill",
+                ]
+              }
+
+              Gtk.Label {
+                label: _("Blueprint");
+
+                styles [
+                  "language-pill",
+                ]
+              }
+
+              Gtk.Label {
+                label: _("Meson");
+
+                styles [
+                  "language-pill",
+                ]
+              }
+            }
+          }
+
+          Gtk.Box notes_card {
+            orientation: vertical;
+            spacing: 12;
+
+            styles [
+              "card",
+              "drill-card",
+            ]
+
+            Gtk.Label {
+              label: _("Observações");
+              xalign: 0;
+
+              styles [
+                "heading",
+              ]
+            }
+
+            Gtk.Label {
+              label: _("As camadas serão ativadas conforme o arquivo for lido.");
+              xalign: 0;
+              wrap: true;
+
+              styles [
+                "dim-label",
+              ]
+            }
+          }
+        };
+      }
+
+      Gtk.Separator {
+        orientation: vertical;
+      }
+
+      Gtk.Box {
+        orientation: vertical;
+        spacing: 20;
+        width-request: 420;
+        margin-start: 24;
+        margin-end: 24;
+        margin-top: 24;
+        margin-bottom: 24;
+        halign: center;
+        valign: center;
+
+        styles [
+          "layers-panel",
+        ]
+
+        Gtk.Box {
+          orientation: vertical;
+          spacing: 6;
+          halign: center;
+
+          Gtk.Label {
+            label: _("Camadas");
+            halign: center;
+
+            styles [
+              "title-1",
+            ]
+          }
+
+          Gtk.Label {
+            label: _("Cebola do projeto");
+            halign: center;
+
+            styles [
+              "dim-label",
+            ]
+          }
+        }
+
+        Gtk.Overlay onion_overlay {
+          width-request: 340;
+          height-request: 340;
+          halign: center;
+          valign: center;
+
+          child: Gtk.Box {
+            width-request: 340;
+            height-request: 340;
+          };
+
+          [overlay]
+          Gtk.Box onion_ring_5 {
+            halign: center;
+            valign: center;
+
+            styles [
+              "onion-ring",
+              "onion-ring-5",
+            ]
+          }
+
+          [overlay]
+          Gtk.Box onion_ring_4 {
+            halign: center;
+            valign: center;
+
+            styles [
+              "onion-ring",
+              "onion-ring-4",
+            ]
+          }
+
+          [overlay]
+          Gtk.Box onion_ring_3 {
+            halign: center;
+            valign: center;
+
+            styles [
+              "onion-ring",
+              "onion-ring-3",
+            ]
+          }
+
+          [overlay]
+          Gtk.Box onion_ring_2 {
+            halign: center;
+            valign: center;
+
+            styles [
+              "onion-ring",
+              "onion-ring-2",
+            ]
+          }
+
+          [overlay]
+          Gtk.Box onion_core {
+            halign: center;
+            valign: center;
+
+            styles [
+              "onion-core",
+              "onion-core-idle",
+            ]
+
+            Gtk.Image {
+              icon-name: "text-x-generic-symbolic";
+              pixel-size: 38;
+              halign: center;
+              valign: center;
+            }
+          }
+        }
+
+        Gtk.Box {
+          orientation: vertical;
+          spacing: 8;
+          halign: center;
+
+          Gtk.Label current_layer_label {
+            label: _("Camada atual: aguardando");
+            halign: center;
+
+            styles [
+              "heading",
+            ]
+          }
+
+          Gtk.Label {
+            label: _("Arquivo → Tipo → Linguagem → Estrutura → Dependências");
+            halign: center;
+            wrap: true;
+            justify: center;
+
+            styles [
+              "dim-label",
+            ]
+          }
+        }
+      }
     };
   };
 }

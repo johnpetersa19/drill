@@ -1,25 +1,12 @@
 /* window.rs
  *
- * Copyright 2026 Unknown
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * Copyright 2026 John Peter Sa
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use gtk::prelude::*;
 use adw::subclass::prelude::*;
+use gtk::prelude::*;
 use gtk::{gio, glib};
 
 mod imp {
@@ -28,9 +15,35 @@ mod imp {
     #[derive(Debug, Default, gtk::CompositeTemplate)]
     #[template(resource = "/org/gnome/Example/window.ui")]
     pub struct DrillWindow {
-        // Template widgets
         #[template_child]
-        pub label: TemplateChild<gtk::Label>,
+        pub selected_path_label: TemplateChild<gtk::Label>,
+
+        #[template_child]
+        pub read_status_dot: TemplateChild<gtk::Box>,
+
+        #[template_child]
+        pub read_status_label: TemplateChild<gtk::Label>,
+
+        #[template_child]
+        pub current_layer_label: TemplateChild<gtk::Label>,
+
+        #[template_child]
+        pub onion_core: TemplateChild<gtk::Box>,
+
+        #[template_child]
+        pub onion_ring_2: TemplateChild<gtk::Box>,
+
+        #[template_child]
+        pub onion_ring_3: TemplateChild<gtk::Box>,
+
+        #[template_child]
+        pub onion_ring_4: TemplateChild<gtk::Box>,
+
+        #[template_child]
+        pub onion_ring_5: TemplateChild<gtk::Box>,
+
+        #[template_child]
+        pub choose_target_button: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -48,7 +61,17 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for DrillWindow {}
+    impl ObjectImpl for DrillWindow {
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            let obj = self.obj();
+            obj.load_css();
+            obj.setup_window_actions();
+            obj.set_read_idle();
+        }
+    }
+
     impl WidgetImpl for DrillWindow {}
     impl WindowImpl for DrillWindow {}
     impl ApplicationWindowImpl for DrillWindow {}
@@ -57,7 +80,8 @@ mod imp {
 
 glib::wrapper! {
     pub struct DrillWindow(ObjectSubclass<imp::DrillWindow>)
-        @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow,        @implements gio::ActionGroup, gio::ActionMap;
+        @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow,
+        @implements gio::ActionGroup, gio::ActionMap;
 }
 
 impl DrillWindow {
@@ -65,5 +89,135 @@ impl DrillWindow {
         glib::Object::builder()
             .property("application", application)
             .build()
+    }
+
+    fn load_css(&self) {
+        let provider = gtk::CssProvider::new();
+        provider.load_from_resource("/org/gnome/Example/style.css");
+
+        if let Some(display) = gtk::gdk::Display::default() {
+            gtk::style_context_add_provider_for_display(
+                &display,
+                &provider,
+                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+            );
+        }
+    }
+
+    fn setup_window_actions(&self) {
+        let imp = self.imp();
+
+        imp.choose_target_button.connect_clicked(glib::clone!(
+            #[weak(rename_to = window)]
+            self,
+            move |_| {
+                window.demo_start_reading();
+            }
+        ));
+    }
+
+    fn demo_start_reading(&self) {
+        self.set_read_reading();
+
+        glib::timeout_add_seconds_local_once(
+            2,
+            glib::clone!(
+                #[weak(rename_to = window)]
+                self,
+                move || {
+                    window.set_read_done();
+                }
+            ),
+        );
+    }
+
+    fn clear_read_dot_classes(&self) {
+        let imp = self.imp();
+
+        imp.read_status_dot.remove_css_class("read-dot-idle");
+        imp.read_status_dot.remove_css_class("read-dot-reading");
+        imp.read_status_dot.remove_css_class("read-dot-done");
+        imp.read_status_dot.remove_css_class("read-dot-error");
+    }
+
+    fn clear_onion_state_classes(&self) {
+        let imp = self.imp();
+
+        imp.onion_core.remove_css_class("onion-core-idle");
+        imp.onion_core.remove_css_class("onion-core-reading");
+        imp.onion_core.remove_css_class("onion-core-done");
+
+        imp.onion_ring_2.remove_css_class("onion-layer-active");
+        imp.onion_ring_3.remove_css_class("onion-layer-active");
+        imp.onion_ring_4.remove_css_class("onion-layer-active");
+        imp.onion_ring_5.remove_css_class("onion-layer-active");
+
+        imp.onion_ring_2.remove_css_class("onion-layer-done");
+        imp.onion_ring_3.remove_css_class("onion-layer-done");
+        imp.onion_ring_4.remove_css_class("onion-layer-done");
+        imp.onion_ring_5.remove_css_class("onion-layer-done");
+    }
+
+    fn set_read_idle(&self) {
+        let imp = self.imp();
+
+        self.clear_read_dot_classes();
+        self.clear_onion_state_classes();
+
+        imp.selected_path_label
+            .set_label("Nenhum arquivo ou pasta escolhido");
+        imp.read_status_label.set_label("Aguardando arquivo");
+        imp.current_layer_label
+            .set_label("Camada atual: aguardando");
+
+        imp.read_status_dot.add_css_class("read-dot-idle");
+        imp.onion_core.add_css_class("onion-core-idle");
+    }
+
+    fn set_read_reading(&self) {
+        let imp = self.imp();
+
+        self.clear_read_dot_classes();
+        self.clear_onion_state_classes();
+
+        imp.selected_path_label
+            .set_label("/home/john/projeto/src/main.rs");
+        imp.read_status_label.set_label("Lendo arquivo...");
+        imp.current_layer_label
+            .set_label("Camada atual: arquivo");
+
+        imp.read_status_dot.add_css_class("read-dot-reading");
+        imp.onion_core.add_css_class("onion-core-reading");
+        imp.onion_ring_2.add_css_class("onion-layer-active");
+    }
+
+    fn set_read_done(&self) {
+        let imp = self.imp();
+
+        self.clear_read_dot_classes();
+        self.clear_onion_state_classes();
+
+        imp.read_status_label.set_label("Arquivo lido");
+        imp.current_layer_label
+            .set_label("Camada atual: primeiro nível");
+
+        imp.read_status_dot.add_css_class("read-dot-done");
+        imp.onion_core.add_css_class("onion-core-done");
+
+        imp.onion_ring_2.add_css_class("onion-layer-done");
+        imp.onion_ring_3.add_css_class("onion-layer-active");
+    }
+
+    #[allow(dead_code)]
+    fn set_read_error(&self) {
+        let imp = self.imp();
+
+        self.clear_read_dot_classes();
+        self.clear_onion_state_classes();
+
+        imp.read_status_label.set_label("Erro ao ler arquivo");
+        imp.current_layer_label.set_label("Camada atual: erro");
+
+        imp.read_status_dot.add_css_class("read-dot-error");
     }
 }
