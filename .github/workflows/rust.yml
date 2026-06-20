@@ -53,10 +53,8 @@ jobs:
       run: |
         echo "Default pc_path:"
         pkgconf --variable pc_path pkg-config || true
-
         echo "glib-2.0 version:"
         pkgconf --modversion glib-2.0
-
         echo "glib-2.0 flags:"
         pkgconf --cflags --libs glib-2.0
 
@@ -65,58 +63,24 @@ jobs:
         echo "=== blueprint-compiler version ==="
         blueprint-compiler --version
 
-        ROOT="$(pwd)"
-        BLP_FILES=$(find "$ROOT" -name '*.blp' -not -path '*/.git/*' | sort)
-
-        if [ -z "$BLP_FILES" ]; then
-          echo "No .blp files found — skipping lint."
-          exit 0
-        fi
-
-        echo "Found .blp files:"
-        echo "$BLP_FILES"
-        echo ""
-
         FAILED=0
 
-        # Group files by parent directory; for each group cd into that dir
-        # so filenames are resolved relative to CWD (required by v0.20.x).
-        PREV_DIR=""
-        FILES_IN_DIR=""
-
-        flush_dir() {
-          dir="$1"
-          files="$2"
-          out="/tmp/blp-check/$(echo "$dir" | tr '/' '_')"
-          mkdir -p "$out"
-          echo "--- Compiling: $dir ---"
-          # cd into the source dir so blueprint-compiler finds the files
-          # shellcheck disable=SC2086
-          if ! (cd "$dir" && blueprint-compiler batch-compile "$out" . $files 2>&1); then
-            echo "FAIL: $dir"
-            return 1
-          fi
-          echo "OK:  $dir"
-          return 0
-        }
-
+        # Find every .blp and compile each one individually from its own directory.
+        # blueprint-compiler batch-compile requires input-dir == CWD when using
+        # bare filenames, so we cd into each file's directory before compiling.
         while IFS= read -r abs_file; do
           dir="$(dirname "$abs_file")"
           base="$(basename "$abs_file")"
-          if [ "$dir" != "$PREV_DIR" ] && [ -n "$PREV_DIR" ]; then
-            flush_dir "$PREV_DIR" "$FILES_IN_DIR" || FAILED=1
-            FILES_IN_DIR=""
+          out="/tmp/blp-check/$(echo "$dir" | tr '/' '_')"
+          mkdir -p "$out"
+          echo "--- $abs_file ---"
+          if ! (cd "$dir" && blueprint-compiler batch-compile "$out" . "$base" 2>&1); then
+            echo "FAIL: $abs_file"
+            FAILED=1
+          else
+            echo "OK:  $abs_file"
           fi
-          FILES_IN_DIR="$FILES_IN_DIR $base"
-          PREV_DIR="$dir"
-        done <<EOF
-        $BLP_FILES
-        EOF
-
-        # flush the last directory group
-        if [ -n "$PREV_DIR" ] && [ -n "$FILES_IN_DIR" ]; then
-          flush_dir "$PREV_DIR" "$FILES_IN_DIR" || FAILED=1
-        fi
+        done < <(find "$(pwd)" -name '*.blp' -not -path '*/.git/*' | sort)
 
         if [ "$FAILED" -eq 1 ]; then
           echo ""
