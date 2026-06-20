@@ -388,13 +388,22 @@ template $DrillWindow : Adw.ApplicationWindow {
               "onion-core-idle",
             ]
 
-            Gtk.Image {
-              icon-name: "text-x-generic-symbolic";
-              pixel-size: 38;
-              halign: center;
-              valign: center;
+            Gtk.Overlay {
               hexpand: true;
               vexpand: true;
+
+              child: Gtk.Box {
+                hexpand: true;
+                vexpand: true;
+              };
+
+              [overlay]
+              Gtk.Image {
+                icon-name: "application-x-generic-symbolic";
+                pixel-size: 38;
+                halign: center;
+                valign: center;
+              }
             }
           }
         }
