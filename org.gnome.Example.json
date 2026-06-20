@@ -37,6 +37,18 @@
     ],
     "modules" : [
         {
+            "name" : "blueprint-compiler",
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/jwestman/blueprint-compiler",
+                    "tag" : "v0.14.0",
+                    "commit" : "de09ba95ccc0e3627f2de5f56c26a89c98900afc"
+                }
+            ]
+        },
+        {
             "name" : "drill",
             "builddir" : true,
             "buildsystem" : "meson",
