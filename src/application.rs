@@ -45,23 +45,17 @@ mod imp {
             let obj = self.obj();
             obj.setup_gactions();
             obj.set_accels_for_action("app.quit", &["<control>q"]);
+            obj.set_accels_for_action("app.shortcuts", &["<control>question"]);
         }
     }
 
     impl ApplicationImpl for DrillApplication {
-        // We connect to the activate callback to create a window when the application
-        // has been launched. Additionally, this callback notifies us when the user
-        // tries to launch a "second instance" of the application. When they try
-        // to do that, we'll just present any existing window.
         fn activate(&self) {
             let application = self.obj();
-            // Get the current window or create one if necessary
             let window = application.active_window().unwrap_or_else(|| {
                 let window = DrillWindow::new(&*application);
                 window.upcast()
             });
-
-            // Ask the window manager/compositor to present the window
             window.present();
         }
     }
@@ -89,10 +83,20 @@ impl DrillApplication {
         let quit_action = gio::ActionEntry::builder("quit")
             .activate(move |app: &Self, _, _| app.quit())
             .build();
+
         let about_action = gio::ActionEntry::builder("about")
             .activate(move |app: &Self, _, _| app.show_about())
             .build();
-        self.add_action_entries([quit_action, about_action]);
+
+        let preferences_action = gio::ActionEntry::builder("preferences")
+            .activate(move |app: &Self, _, _| app.show_preferences())
+            .build();
+
+        let shortcuts_action = gio::ActionEntry::builder("shortcuts")
+            .activate(move |app: &Self, _, _| app.show_shortcuts())
+            .build();
+
+        self.add_action_entries([quit_action, about_action, preferences_action, shortcuts_action]);
     }
 
     fn show_about(&self) {
@@ -103,11 +107,34 @@ impl DrillApplication {
             .developer_name("Unknown")
             .version(VERSION)
             .developers(vec!["Unknown"])
-            // Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
             .translator_credits(&gettext("translator-credits"))
-            .copyright("© 2026 Unknown")
+            .copyright("\u00a9 2026 Unknown")
             .build();
 
         about.present(Some(&window));
+    }
+
+    fn show_preferences(&self) {
+        let window = self.active_window().unwrap();
+        // TODO: implementar PreferencesDialog (Adw.PreferencesDialog)
+        // Placeholder para nao deixar a acao sem resposta.
+        let dialog = adw::AlertDialog::builder()
+            .heading(&gettext("Preferences"))
+            .body(&gettext("Preferences not yet implemented."))
+            .build();
+        dialog.add_response("ok", &gettext("OK"));
+        dialog.set_default_response(Some("ok"));
+        dialog.present(Some(&window));
+    }
+
+    fn show_shortcuts(&self) {
+        let window = self.active_window().unwrap();
+        // ShortcutsWindow gerado a partir do shortcuts-dialog.blp via gresource.
+        let builder = gtk::Builder::from_resource("/org/gnome/Example/shortcuts-dialog.ui");
+        let shortcuts_window: gtk::ShortcutsWindow = builder
+            .object("shortcuts")
+            .expect("shortcuts-dialog.ui deve conter um objeto chamado 'shortcuts'");
+        shortcuts_window.set_transient_for(Some(window.downcast_ref::<gtk::Window>().unwrap()));
+        shortcuts_window.present();
     }
 }
