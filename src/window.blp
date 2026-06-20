@@ -399,10 +399,14 @@ template $DrillWindow : Adw.ApplicationWindow {
 
               [overlay]
               Gtk.Image {
-                icon-name: "application-x-generic-symbolic";
+                icon-name: "text-x-generic-symbolic";
                 pixel-size: 38;
                 halign: center;
                 valign: center;
+
+                styles [
+                  "onion-file-icon",
+                ]
               }
             }
           }

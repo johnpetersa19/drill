@@ -123,6 +123,10 @@
   box-shadow: 0 0 14px alpha(@success_color, 0.35);
 }
 
+.onion-file-icon {
+  color: inherit;
+}
+
 @keyframes drill-read-pulse {
   0% {
     opacity: 0.45;
