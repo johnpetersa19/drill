@@ -1,5 +1,4 @@
-# Drill (Broca v2)
-
+# Drill 
 Ferramenta de análise recursiva de arquivos binários por árvore de nós.
 
 Aceita qualquer `.bin`, `.rom`, `.raw`, `.img` ou `.dat` — firmware, executável,
