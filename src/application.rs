@@ -108,7 +108,7 @@ impl DrillApplication {
             .version(VERSION)
             .developers(vec!["Unknown"])
             .translator_credits(&gettext("translator-credits"))
-            .copyright("\u00a9 2026 Unknown")
+            .copyright("\u{a9} 2026 Unknown")
             .build();
 
         about.present(Some(&window));
