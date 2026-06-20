@@ -374,11 +374,9 @@ template $DrillWindow : Adw.ApplicationWindow {
           }
 
           [overlay]
-          Gtk.Fixed onion_core {
+          Gtk.Box onion_core {
             halign: center;
             valign: center;
-            width-request: 84;
-            height-request: 84;
 
             styles [
               "onion-core",
@@ -388,10 +386,8 @@ template $DrillWindow : Adw.ApplicationWindow {
             Gtk.Image {
               icon-name: "text-x-generic-symbolic";
               pixel-size: 38;
-
-              styles [
-                "onion-file-icon",
-              ]
+              halign: center;
+              valign: center;
             }
           }
         }
