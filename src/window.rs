@@ -164,11 +164,9 @@ impl DrillWindow {
         self.clear_read_dot_classes();
         self.clear_onion_state_classes();
 
-        imp.selected_path_label
-            .set_label("Nenhum arquivo ou pasta escolhido");
-        imp.read_status_label.set_label("Aguardando arquivo");
-        imp.current_layer_label
-            .set_label("Camada atual: aguardando");
+        imp.selected_path_label.set_label("No file or folder chosen");
+        imp.read_status_label.set_label("Waiting for file");
+        imp.current_layer_label.set_label("Current layer: waiting");
 
         imp.read_status_dot.add_css_class("read-dot-idle");
         imp.onion_core.add_css_class("onion-core-idle");
@@ -181,10 +179,9 @@ impl DrillWindow {
         self.clear_onion_state_classes();
 
         imp.selected_path_label
-            .set_label("/home/john/projeto/src/main.rs");
-        imp.read_status_label.set_label("Lendo arquivo...");
-        imp.current_layer_label
-            .set_label("Camada atual: arquivo");
+            .set_label("/home/john/project/src/main.rs");
+        imp.read_status_label.set_label("Reading file...");
+        imp.current_layer_label.set_label("Current layer: file");
 
         imp.read_status_dot.add_css_class("read-dot-reading");
         imp.onion_core.add_css_class("onion-core-reading");
@@ -197,9 +194,8 @@ impl DrillWindow {
         self.clear_read_dot_classes();
         self.clear_onion_state_classes();
 
-        imp.read_status_label.set_label("Arquivo lido");
-        imp.current_layer_label
-            .set_label("Camada atual: primeiro nível");
+        imp.read_status_label.set_label("File read");
+        imp.current_layer_label.set_label("Current layer: first level");
 
         imp.read_status_dot.add_css_class("read-dot-done");
         imp.onion_core.add_css_class("onion-core-done");
@@ -215,8 +211,8 @@ impl DrillWindow {
         self.clear_read_dot_classes();
         self.clear_onion_state_classes();
 
-        imp.read_status_label.set_label("Erro ao ler arquivo");
-        imp.current_layer_label.set_label("Camada atual: erro");
+        imp.read_status_label.set_label("Error reading file");
+        imp.current_layer_label.set_label("Current layer: error");
 
         imp.read_status_dot.add_css_class("read-dot-error");
     }
