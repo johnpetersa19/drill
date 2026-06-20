@@ -42,9 +42,9 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://gitlab.gnome.org/jwestman/blueprint-compiler",
-                    "tag" : "v0.14.0",
-                    "commit" : "de09ba95ccc0e3627f2de5f56c26a89c98900afc"
+                    "url" : "https://gitlab.gnome.org/GNOME/blueprint-compiler",
+                    "tag" : "0.18.0",
+                    "commit" : "07c9c9df9cd1b6b4454ecba21ee58211e9144a4b"
                 }
             ]
         },
