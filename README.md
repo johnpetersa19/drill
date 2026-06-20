@@ -1,34 +1,35 @@
-# Drill 
-Ferramenta de análise recursiva de arquivos binários por árvore de nós.
+# Drill
 
-Aceita qualquer `.bin`, `.rom`, `.raw`, `.img` ou `.dat` — firmware, executável,
-dump de memória, imagem de disco, ROM de console — e percorre o conteúdo real
-usando detectores plugáveis, análise de entropia e validação estrutural,
-produzindo um mapa JSON navegável (`esqueleto/manifesto.json`) sem jamais
-modificar o arquivo original.
+Recursive binary file analysis tool using a node tree.
 
-## Arquitetura
+Accepts any `.bin`, `.rom`, `.raw`, `.img` or `.dat` — firmware, executable,
+memory dump, disk image, console ROM — and traverses the real content
+using pluggable detectors, entropy analysis and structural validation,
+producing a navigable JSON map (`skeleton/manifest.json`) without ever
+modifying the original file.
+
+## Architecture
 
 ```
 src/
-├── engine/       # motor recursivo: Node, Tree, Entropy, Manifest
-├── detectors/    # plugins de detecção (containers, compressão, fs, executáveis...)
-├── packers/      # packers simétricos para Broca Reversa
-├── output/       # geração de esqueleto/, nos/, relatórios
-└── window.rs     # interface GTK4/libadwaita
+├── engine/       # recursive engine: Node, Tree, Entropy, Manifest
+├── detectors/    # detection plugins (containers, compression, fs, executables...)
+├── packers/      # symmetric packers for Reverse Drill
+├── output/       # skeleton/, nodes/, reports generation
+└── window.rs     # GTK4/libadwaita UI
 ```
 
-## Saída
+## Output
 
 ```
-BROCA_ANALISE/
-├── original/          # arquivo intacto + SHA256
-├── esqueleto/         # manifesto.json + relatórios de texto
-├── nos/               # assembly, pseudo-código, listagens de fs
-├── edicoes/           # edições pendentes / aplicadas (Broca Reversa)
-└── saida/             # arquivo reconstruído + validação round-trip
+DRILL_ANALYSIS/
+├── original/          # untouched file + SHA256
+├── skeleton/          # manifest.json + text reports
+├── nodes/             # assembly, pseudo-code, filesystem listings
+├── edits/             # pending / applied edits (Reverse Drill)
+└── output/            # reconstructed file + round-trip validation
 ```
 
-## Licença
+## License
 
 GPL-3.0-or-later
