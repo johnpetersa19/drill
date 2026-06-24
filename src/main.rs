@@ -1,6 +1,6 @@
 /* main.rs
  *
- * Copyright 2026 Unknown
+ * Copyright 2026 John Peter Sa
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+mod analysis;
 mod application;
 mod config;
+mod detectors;
+mod engine;
+mod output;
+mod packers;
+mod ui;
+mod widgets;
 mod window;
 
 use self::application::DrillApplication;
@@ -27,8 +34,8 @@ use self::window::DrillWindow;
 
 use config::{GETTEXT_PACKAGE, LOCALEDIR, PKGDATADIR};
 use gettextrs::{bind_textdomain_codeset, bindtextdomain, textdomain};
-use gtk::{gio, glib};
 use gtk::prelude::*;
+use gtk::{gio, glib};
 
 fn main() -> glib::ExitCode {
     // Set up gettext translations
@@ -45,7 +52,10 @@ fn main() -> glib::ExitCode {
     // Create a new GtkApplication. The application manages our main loop,
     // application windows, integration with the window manager/compositor, and
     // desktop features such as file opening and single-instance applications.
-    let app = DrillApplication::new("org.gnome.Example", &gio::ApplicationFlags::empty());
+    let app = DrillApplication::new(
+        "io.github.johnpetersa.Drill",
+        &gio::ApplicationFlags::empty(),
+    );
 
     // Run the application. This function will block until the application
     // exits. Upon return, we have our exit code to return to the shell. (This

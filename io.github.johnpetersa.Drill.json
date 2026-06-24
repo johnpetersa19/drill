@@ -1,5 +1,5 @@
 {
-    "id" : "org.gnome.Example",
+    "id" : "io.github.johnpetersa.Drill",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "50",
     "sdk" : "org.gnome.Sdk",
@@ -55,7 +55,7 @@
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "file:///home/john/Projects"
+                    "url" : "file:///home/john/Projects/drill"
                 }
             ]
         }

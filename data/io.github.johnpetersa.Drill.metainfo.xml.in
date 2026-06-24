@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.johnpetersa.Drill</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <name>Drill</name>
+  <summary>Recursive binary analysis tool</summary>
+  <description>
+    <p>Drill inspects binary files and disk images through layered analysis, building a navigable map of detected structures without modifying the original input.</p>
+  </description>
+
+  <developer id="io.github.johnpetersa">
+    <name>John Peter Sa</name>
+  </developer>
+
+  <url type="homepage">https://github.com/johnpetersa/drill</url>
+
+  <translation type="gettext">drill</translation>
+  <launchable type="desktop-id">io.github.johnpetersa.Drill.desktop</launchable>
+  <content_rating type="oars-1.1" />
+
+  <branding>
+    <color type="primary" scheme_preference="light">#3584e4</color>
+    <color type="primary" scheme_preference="dark">#62a0ea</color>
+  </branding>
+
+  <releases>
+    <release version="0.1.0" date="2026-06-20">
+      <description translate="no">
+        <p>Initial prototype with GTK interface and analysis architecture scaffolding.</p>
+      </description>
+    </release>
+  </releases>
+</component>

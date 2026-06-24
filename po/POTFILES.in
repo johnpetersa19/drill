@@ -1,6 +1,6 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
-data/org.gnome.Example.desktop.in
-data/org.gnome.Example.gschema.xml
-data/org.gnome.Example.metainfo.xml.in
+data/io.github.johnpetersa.Drill.desktop.in
+data/io.github.johnpetersa.Drill.gschema.xml
+data/io.github.johnpetersa.Drill.metainfo.xml.in
 src/window.blp

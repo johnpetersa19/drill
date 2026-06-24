@@ -1,6 +1,6 @@
 /* application.rs
  *
- * Copyright 2026 Unknown
+ * Copyright 2026 John Peter Sa
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-use gettextrs::gettext;
 use adw::prelude::*;
 use adw::subclass::prelude::*;
+use gettextrs::gettext;
 use gtk::{gio, glib};
 
 use crate::config::VERSION;
@@ -75,7 +75,7 @@ impl DrillApplication {
         glib::Object::builder()
             .property("application-id", application_id)
             .property("flags", flags)
-            .property("resource-base-path", "/org/gnome/Example")
+            .property("resource-base-path", "/io/github/johnpetersa/Drill")
             .build()
     }
 
@@ -96,19 +96,24 @@ impl DrillApplication {
             .activate(move |app: &Self, _, _| app.show_shortcuts())
             .build();
 
-        self.add_action_entries([quit_action, about_action, preferences_action, shortcuts_action]);
+        self.add_action_entries([
+            quit_action,
+            about_action,
+            preferences_action,
+            shortcuts_action,
+        ]);
     }
 
     fn show_about(&self) {
         let window = self.active_window().unwrap();
         let about = adw::AboutDialog::builder()
             .application_name("Drill")
-            .application_icon("org.gnome.Example")
-            .developer_name("Unknown")
+            .application_icon("io.github.johnpetersa.Drill")
+            .developer_name("John Peter Sa")
             .version(VERSION)
-            .developers(vec!["Unknown"])
+            .developers(vec!["John Peter Sa"])
             .translator_credits(&gettext("translator-credits"))
-            .copyright("\u{a9} 2026 Unknown")
+            .copyright("\u{a9} 2026 John Peter Sa")
             .build();
 
         about.present(Some(&window));
@@ -130,7 +135,8 @@ impl DrillApplication {
     fn show_shortcuts(&self) {
         let window = self.active_window().unwrap();
         // ShortcutsWindow gerado a partir do shortcuts-dialog.blp via gresource.
-        let builder = gtk::Builder::from_resource("/org/gnome/Example/shortcuts-dialog.ui");
+        let builder =
+            gtk::Builder::from_resource("/io/github/johnpetersa/Drill/shortcuts-dialog.ui");
         let shortcuts_window: gtk::ShortcutsWindow = builder
             .object("shortcuts")
             .expect("shortcuts-dialog.ui deve conter um objeto chamado 'shortcuts'");
