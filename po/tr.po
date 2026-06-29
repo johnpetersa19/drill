@@ -1,0 +1,236 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: drill 0.1.0\n"
+"POT-Creation-Date: 2026-06-29 20:40-0300\n"
+"PO-Revision-Date: 2026-06-29 20:32-0300\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/application.rs:115
+msgid "translator-credits"
+msgstr ""
+
+#: src/application.rs:127
+msgid "Preferences"
+msgstr ""
+
+#: src/application.rs:128
+msgid "Preferences not yet implemented."
+msgstr ""
+
+#: src/application.rs:130
+msgid "OK"
+msgstr ""
+
+#: src/window.rs:41
+msgid "No project tree yet."
+msgstr ""
+
+#: src/window.rs:422 src/window.blp:148
+msgid "Waiting for file"
+msgstr ""
+
+#: src/window.rs:427 src/window.blp:164
+msgid "Waiting for analysis."
+msgstr ""
+
+#: src/window.rs:429 src/window.blp:271
+msgid "Current layer: waiting"
+msgstr ""
+
+#: src/window.rs:431 src/window.blp:280
+msgid "Select a layer to inspect it."
+msgstr ""
+
+#: src/window.rs:443
+msgid "Reading file..."
+msgstr ""
+
+#: src/window.rs:446 src/window.rs:472
+msgid "Layer 1"
+msgstr ""
+
+#: src/window.rs:447 src/window.rs:454 src/window.rs:473
+msgid "Current layer: file"
+msgstr ""
+
+#: src/window.rs:448 src/window.rs:456
+msgid "Layer 1: file under reading."
+msgstr ""
+
+#: src/window.rs:452
+msgid "Building the first tree level..."
+msgstr ""
+
+#: src/window.rs:468
+msgid "File read"
+msgstr ""
+
+#: src/window.rs:474
+msgid "Layer 1: file or folder chosen for reading."
+msgstr ""
+
+#: src/window.rs:478
+msgid "Layer 2"
+msgstr ""
+
+#: src/window.rs:479
+msgid "Current layer: type"
+msgstr ""
+
+#: src/window.rs:480
+msgid "Layer 2: type detected from the content."
+msgstr ""
+
+#: src/window.rs:484
+msgid "Layer 3"
+msgstr ""
+
+#: src/window.rs:485
+msgid "Current layer: language"
+msgstr ""
+
+#: src/window.rs:486
+msgid "Layer 3: main language or format identified."
+msgstr ""
+
+#: src/window.rs:490
+msgid "Layer 4"
+msgstr ""
+
+#: src/window.rs:491
+msgid "Current layer: structure"
+msgstr ""
+
+#: src/window.rs:492
+msgid "Layer 4: internal structure found during analysis."
+msgstr ""
+
+#: src/window.rs:496
+msgid "Core"
+msgstr ""
+
+#: src/window.rs:497
+msgid "Current layer: dependencies"
+msgstr ""
+
+#: src/window.rs:499
+msgid "Core: dependencies and relations extracted from the analyzed layer."
+msgstr ""
+
+#: src/window.rs:505
+msgid "Project tree ready: build files, generated metadata and resources."
+msgstr ""
+
+#: src/window.rs:508
+msgid "Current layer: first level"
+msgstr ""
+
+#: src/window.rs:510
+msgid "Layer 3: first data detected during reading."
+msgstr ""
+
+#: src/window.rs:524
+msgid "Error reading file"
+msgstr ""
+
+#: src/window.rs:526
+msgid "The project tree could not be generated."
+msgstr ""
+
+#: src/window.rs:528
+msgid "Current layer: error"
+msgstr ""
+
+#: src/window.rs:530
+msgid "The selected layer could not be read."
+msgstr ""
+
+#: src/shortcuts-dialog.blp:6
+msgid "Shortcuts"
+msgstr ""
+
+#: src/shortcuts-dialog.blp:9
+msgctxt "shortcut window"
+msgid "Show Shortcuts"
+msgstr ""
+
+#: src/shortcuts-dialog.blp:14
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr ""
+
+#: src/window.blp:5 src/window.blp:13
+#: data/io.github.johnpetersa.Drill.desktop.in:2
+#: data/io.github.johnpetersa.Drill.metainfo.xml.in:7
+msgid "Drill"
+msgstr ""
+
+#: src/window.blp:14
+msgid "Layered reading"
+msgstr ""
+
+#: src/window.blp:21
+msgid "Main menu"
+msgstr ""
+
+#: src/window.blp:58
+msgid "Reading panel"
+msgstr ""
+
+#: src/window.blp:67
+msgid "Choose a file or folder to start the visual analysis."
+msgstr ""
+
+#: src/window.blp:93
+msgid "Project tree"
+msgstr ""
+
+#: src/window.blp:124
+msgid "Reading"
+msgstr ""
+
+#: src/window.blp:210
+msgid "Layers"
+msgstr ""
+
+#: src/window.blp:219
+msgid "Project onion"
+msgstr ""
+
+#: src/window.blp:292
+msgid "File → Type → Language → Structure → Dependencies"
+msgstr ""
+
+#: src/window.blp:311
+msgid "_Choose file or folder"
+msgstr ""
+
+#: src/window.blp:318
+msgid "_Preferences"
+msgstr ""
+
+#: src/window.blp:323
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: src/window.blp:328
+msgid "_About Drill"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.desktop.in:8
+msgid "binary;analysis;firmware;rom;"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.metainfo.xml.in:8
+msgid "Recursive binary analysis tool"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.metainfo.xml.in:14
+msgid "John Peter Sa"
+msgstr ""

@@ -9,11 +9,14 @@ blueprints = custom_target(
     'window.blp',
     'shortcuts-dialog.blp',
   ),
-  output: '.',
+  output: [
+    'window.ui',
+    'shortcuts-dialog.ui',
+  ],
   command: [
     blueprint_compiler,
     'batch-compile',
-    '@OUTPUT@',
+    meson.current_build_dir(),
     meson.current_source_dir(),
     '@INPUT@',
   ],

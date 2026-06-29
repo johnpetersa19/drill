@@ -23,6 +23,7 @@ mod application;
 mod config;
 mod detectors;
 mod engine;
+mod icon_catalog;
 mod output;
 mod packers;
 mod ui;
