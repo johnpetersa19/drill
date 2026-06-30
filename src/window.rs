@@ -767,6 +767,32 @@ fn tree_branch_parts(branch: &str) -> (i32, &'static str) {
     (depth, connector)
 }
 
+/// Returns a translated string like "Layer {n}" using the template
+/// `"Layer %d"` extracted via gettext.
+///
+/// The literal `"Layer %d"` is the canonical msgid registered in the .pot.
+/// At runtime we translate it then replace `%d` with the number.
+fn layer_label(n: usize) -> String {
+    // TRANSLATORS: %d is replaced with the layer number (e.g. "Layer 4")
+    gettext("Layer %d").replace("%d", &n.to_string())
+}
+
+/// Returns a translated string like "Current layer: {n}".
+///
+/// msgid: `"Current layer: %d"`
+fn current_layer_label(n: usize) -> String {
+    // TRANSLATORS: %d is replaced with the layer number (e.g. "Current layer: 4")
+    gettext("Current layer: %d").replace("%d", &n.to_string())
+}
+
+/// Returns a translated string like "Layer {n} in the analysis chain."
+///
+/// msgid: `"Layer %d in the analysis chain."`
+fn layer_detail(n: usize) -> String {
+    // TRANSLATORS: %d is replaced with the layer number (e.g. "Layer 4 in the analysis chain.")
+    gettext("Layer %d in the analysis chain.").replace("%d", &n.to_string())
+}
+
 fn demo_layers(
     count: usize,
     terminal_state: LayerState,
@@ -789,19 +815,19 @@ fn demo_layers(
         let label = if index + 1 == count {
             terminal_label.clone()
         } else {
-            gettext(&format!("Layer {}", layer_number))
+            layer_label(layer_number)
         };
 
         let current = if index + 1 == count {
             current_label.clone()
         } else {
-            gettext(&format!("Current layer: {}", layer_number))
+            current_layer_label(layer_number)
         };
 
         let detail_text = if index + 1 == count {
             detail.clone()
         } else {
-            gettext(&format!("Layer {} in the analysis chain.", layer_number))
+            layer_detail(layer_number)
         };
 
         layers.push(LayerSpec {

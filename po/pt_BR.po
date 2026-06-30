@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: drill 0.1.0\n"
 "POT-Creation-Date: 2026-06-30 20:16-0300\n"
-"PO-Revision-Date: 2026-06-30 20:20-0300\n"
+"PO-Revision-Date: 2026-06-30 20:24-0300\n"
 "Last-Translator: John Peter Sa <johnpetersa19@users.noreply.github.com>\n"
 "Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
@@ -102,6 +102,21 @@ msgstr "Camada atual: erro"
 #: src/window.rs:747
 msgid "The selected layer could not be read."
 msgstr "A camada selecionada não pôde ser lida."
+
+#. TRANSLATORS: %d is replaced with the layer number (e.g. "Layer 4")
+#: src/window.rs
+msgid "Layer %d"
+msgstr "Camada %d"
+
+#. TRANSLATORS: %d is replaced with the layer number (e.g. "Current layer: 4")
+#: src/window.rs
+msgid "Current layer: %d"
+msgstr "Camada atual: %d"
+
+#. TRANSLATORS: %d is replaced with the layer number (e.g. "Layer 4 in the analysis chain.")
+#: src/window.rs
+msgid "Layer %d in the analysis chain."
+msgstr "Camada %d na cadeia de análise."
 
 #: src/shortcuts-dialog.blp:6
 msgid "Shortcuts"
