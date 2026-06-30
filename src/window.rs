@@ -11,6 +11,10 @@ use gettextrs::gettext;
 use gtk::prelude::*;
 use gtk::{gio, glib};
 use std::borrow::Cow;
+use std::cell::{Cell, RefCell};
+
+/// How many onion rings are visible at once.
+const VISIBLE_LAYERS: usize = 10;
 
 #[derive(Clone)]
 struct TreeItem {
@@ -200,6 +204,21 @@ mod imp {
 
         #[template_child]
         pub onion_core: TemplateChild<gtk::Box>,
+
+        #[template_child]
+        pub zoom_in_button: TemplateChild<gtk::Button>,
+
+        #[template_child]
+        pub zoom_out_button: TemplateChild<gtk::Button>,
+
+        #[template_child]
+        pub zoom_page_label: TemplateChild<gtk::Label>,
+
+        /// Full list of layers from the last call to `set_onion_layers_full`.
+        pub all_layers: RefCell<Vec<LayerSpec>>,
+
+        /// Index of the first visible layer in `all_layers`.
+        pub layer_offset: Cell<usize>,
     }
 
     #[glib::object_subclass]
@@ -224,6 +243,7 @@ mod imp {
             let obj = self.obj();
             obj.load_css();
             obj.setup_window_actions();
+            obj.setup_zoom_buttons();
             obj.set_read_idle();
         }
     }
@@ -274,15 +294,84 @@ impl DrillWindow {
         self.add_action_entries([choose_target_action]);
     }
 
-    fn clear_onion_layers(&self) {
+    fn setup_zoom_buttons(&self) {
         let imp = self.imp();
 
+        imp.zoom_in_button.connect_clicked(glib::clone!(
+            #[weak(rename_to = window)]
+            self,
+            move |_| {
+                let imp = window.imp();
+                let total = imp.all_layers.borrow().len();
+                let offset = imp.layer_offset.get();
+                let new_offset = (offset + 1).min(total.saturating_sub(VISIBLE_LAYERS));
+                imp.layer_offset.set(new_offset);
+                window.refresh_onion_viewport();
+            }
+        ));
+
+        imp.zoom_out_button.connect_clicked(glib::clone!(
+            #[weak(rename_to = window)]
+            self,
+            move |_| {
+                let imp = window.imp();
+                let offset = imp.layer_offset.get();
+                if offset > 0 {
+                    imp.layer_offset.set(offset - 1);
+                    window.refresh_onion_viewport();
+                }
+            }
+        ));
+    }
+
+    /// Store the full layer list, reset offset to 0, render the first window.
+    fn set_onion_layers_full(&self, layers: Vec<LayerSpec>) {
+        let imp = self.imp();
+        imp.all_layers.replace(layers);
+        imp.layer_offset.set(0);
+        self.refresh_onion_viewport();
+    }
+
+    /// Re-render rings using the current offset and update zoom button sensitivity.
+    fn refresh_onion_viewport(&self) {
+        let imp = self.imp();
+        let all = imp.all_layers.borrow();
+        let total = all.len();
+        let offset = imp.layer_offset.get();
+
+        let end = (offset + VISIBLE_LAYERS).min(total);
+        let visible: Vec<LayerSpec> = all[offset..end].to_vec();
+
+        drop(all); // release borrow before calling set_onion_rings
+        self.set_onion_rings(&visible);
+
+        let imp = self.imp();
+        let total = imp.all_layers.borrow().len();
+        let offset = imp.layer_offset.get();
+
+        imp.zoom_out_button.set_sensitive(offset > 0);
+        imp.zoom_in_button
+            .set_sensitive(offset + VISIBLE_LAYERS < total);
+
+        if total == 0 {
+            imp.zoom_page_label.set_label("–");
+        } else {
+            let first = offset + 1;
+            let last = (offset + VISIBLE_LAYERS).min(total);
+            imp.zoom_page_label
+                .set_label(&format!("{first}–{last} / {total}"));
+        }
+    }
+
+    fn clear_onion_layers(&self) {
+        let imp = self.imp();
         while let Some(child) = imp.onion_layers_fixed.first_child() {
             imp.onion_layers_fixed.remove(&child);
         }
     }
 
-    fn set_onion_layers(&self, layers: &[LayerSpec]) {
+    /// Low-level: draw exactly the rings in `layers` (already sliced).
+    fn set_onion_rings(&self, layers: &[LayerSpec]) {
         self.clear_onion_layers();
 
         if layers.is_empty() {
@@ -290,8 +379,8 @@ impl DrillWindow {
         }
 
         let imp = self.imp();
-        let outer_size = 320.0;
-        let inner_size = 88.0;
+        let outer_size = 320.0_f64;
+        let inner_size = 88.0_f64;
         let step = if layers.len() > 1 {
             (outer_size - inner_size) / (layers.len() as f64 - 1.0)
         } else {
@@ -333,7 +422,6 @@ impl DrillWindow {
 
     fn show_onion_layer(&self, current_label: &str, detail: &str) {
         let imp = self.imp();
-
         imp.current_layer_label.set_label(current_label);
         imp.onion_layer_detail_label.set_label(detail);
     }
@@ -397,7 +485,6 @@ impl DrillWindow {
 
     fn clear_read_dot_classes(&self) {
         let imp = self.imp();
-
         imp.read_status_dot.remove_css_class("read-dot-idle");
         imp.read_status_dot.remove_css_class("read-dot-reading");
         imp.read_status_dot.remove_css_class("read-dot-done");
@@ -406,10 +493,19 @@ impl DrillWindow {
 
     fn clear_onion_state_classes(&self) {
         let imp = self.imp();
-
         imp.onion_core.remove_css_class("onion-core-idle");
         imp.onion_core.remove_css_class("onion-core-reading");
         imp.onion_core.remove_css_class("onion-core-done");
+    }
+
+    fn reset_zoom(&self) {
+        let imp = self.imp();
+        imp.all_layers.replace(vec![]);
+        imp.layer_offset.set(0);
+        imp.zoom_in_button.set_sensitive(false);
+        imp.zoom_out_button.set_sensitive(false);
+        imp.zoom_page_label.set_label("–");
+        self.clear_onion_layers();
     }
 
     fn set_read_idle(&self) {
@@ -417,12 +513,12 @@ impl DrillWindow {
 
         self.clear_read_dot_classes();
         self.clear_onion_state_classes();
+        self.reset_zoom();
 
         imp.read_status_label
             .set_label(&gettext("Waiting for file"));
         let items = empty_tree_items();
         self.set_tree_items(&items);
-        self.clear_onion_layers();
         imp.tree_summary_label
             .set_label(&gettext("Waiting for analysis."));
         imp.current_layer_label
@@ -442,7 +538,7 @@ impl DrillWindow {
 
         imp.read_status_label.set_label(&gettext("Reading file..."));
         self.set_tree_items(READING_TREE_ITEMS);
-        self.set_onion_layers(&demo_layers(
+        self.set_onion_layers_full(demo_layers(
             1,
             LayerState::Active,
             gettext("Layer 1"),
@@ -469,7 +565,7 @@ impl DrillWindow {
         imp.read_status_label.set_label(&gettext("File read"));
         self.set_tree_items(PROJECT_TREE_ITEMS);
         let layer_count = PROJECT_TREE_ITEMS.len().max(5);
-        self.set_onion_layers(&demo_layers(
+        self.set_onion_layers_full(demo_layers(
             layer_count,
             LayerState::Done,
             gettext("Core"),

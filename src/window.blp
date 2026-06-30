@@ -262,6 +262,46 @@ template $DrillWindow : Adw.ApplicationWindow {
             }
           }
 
+          // Zoom controls
+          Gtk.Box {
+            orientation: horizontal;
+            spacing: 8;
+            halign: center;
+
+            Gtk.Button zoom_out_button {
+              icon-name: "zoom-out-symbolic";
+              tooltip-text: _("Zoom − (previous layers)");
+              sensitive: false;
+
+              styles [
+                "circular",
+                "flat",
+              ]
+            }
+
+            Gtk.Label zoom_page_label {
+              label: "–";
+              width-chars: 7;
+              justify: center;
+
+              styles [
+                "dim-label",
+                "numeric",
+              ]
+            }
+
+            Gtk.Button zoom_in_button {
+              icon-name: "zoom-in-symbolic";
+              tooltip-text: _("Zoom + (next layers)");
+              sensitive: false;
+
+              styles [
+                "circular",
+                "flat",
+              ]
+            }
+          }
+
           Gtk.Box {
             orientation: vertical;
             spacing: 8;
