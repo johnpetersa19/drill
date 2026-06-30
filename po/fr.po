@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: drill 0.1.0\n"
-"POT-Creation-Date: 2026-06-30 20:16-0300\n"
+"POT-Creation-Date: 2026-06-30 20:29-0300\n"
 "PO-Revision-Date: 2026-06-29 20:32-0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -101,6 +101,18 @@ msgstr ""
 
 #: src/window.rs:747
 msgid "The selected layer could not be read."
+msgstr ""
+
+#: src/window.rs:777
+msgid "Layer %d"
+msgstr ""
+
+#: src/window.rs:785
+msgid "Current layer: %d"
+msgstr ""
+
+#: src/window.rs:793
+msgid "Layer %d in the analysis chain."
 msgstr ""
 
 #: src/shortcuts-dialog.blp:6

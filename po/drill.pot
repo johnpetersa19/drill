@@ -1,14 +1,7 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the drill package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: drill 0.1.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-30 20:24-0300\n"
+"POT-Creation-Date: 2026-06-30 20:29-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,90 +30,91 @@ msgstr ""
 msgid "No project tree yet."
 msgstr ""
 
-#: src/window.rs src/window.blp:156
+#: src/window.rs:665
+#: src/window.blp:156
 msgid "Waiting for file"
 msgstr ""
 
-#: src/window.rs src/window.blp:172
+#: src/window.rs:669
+#: src/window.blp:172
 msgid "Waiting for analysis."
 msgstr ""
 
-#: src/window.rs src/window.blp:305
+#: src/window.rs:671
+#: src/window.blp:305
 msgid "Current layer: waiting"
 msgstr ""
 
-#: src/window.rs src/window.blp:314
+#: src/window.rs:673
+#: src/window.blp:314
 msgid "Select a layer to inspect it."
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:685
 msgid "Reading file..."
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:690
 msgid "Layer 1"
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:691 src/window.rs:697
 msgid "Current layer: file"
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:692 src/window.rs:699
 msgid "Layer 1: file under reading."
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:695
 msgid "Building the first tree level..."
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:711
 msgid "File read"
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:717
 msgid "Core"
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:718 src/window.rs:725
 msgid "Current layer: first level"
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:719 src/window.rs:727
 msgid "Layer 3: first data detected during reading."
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:722
 msgid "Project tree ready: build files, generated metadata and resources."
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:741
 msgid "Error reading file"
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:743
 msgid "The project tree could not be generated."
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:745
 msgid "Current layer: error"
 msgstr ""
 
-#: src/window.rs
+#: src/window.rs:747
 msgid "The selected layer could not be read."
 msgstr ""
 
-#. TRANSLATORS: %d is replaced with the layer number (e.g. "Layer 4")
-#: src/window.rs
+#: src/window.rs:777
 msgid "Layer %d"
 msgstr ""
 
-#. TRANSLATORS: %d is replaced with the layer number (e.g. "Current layer: 4")
-#: src/window.rs
+#: src/window.rs:785
 msgid "Current layer: %d"
 msgstr ""
 
-#. TRANSLATORS: %d is replaced with the layer number (e.g. "Layer 4 in the analysis chain.")
-#: src/window.rs
+#: src/window.rs:793
 msgid "Layer %d in the analysis chain."
 msgstr ""
 
@@ -138,7 +132,8 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr ""
 
-#: src/window.blp:5 src/window.blp:13
+#: src/window.blp:5
+#: src/window.blp:13
 #: data/io.github.johnpetersa.Drill.desktop.in:2
 #: data/io.github.johnpetersa.Drill.metainfo.xml.in:7
 msgid "Drill"
@@ -239,3 +234,4 @@ msgstr ""
 #: data/io.github.johnpetersa.Drill.gschema.xml:17
 msgid "Whether the main window was maximized when the application last closed."
 msgstr ""
+

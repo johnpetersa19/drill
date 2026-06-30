@@ -236,6 +236,12 @@ mod imp {
 
         /// Index of the first visible layer in `all_layers`.
         pub layer_offset: Cell<usize>,
+
+        /// Layer currently selected through the onion rings.
+        pub selected_layer_number: Cell<usize>,
+
+        /// Label currently selected in the project tree.
+        pub selected_tree_name: RefCell<Option<gtk::Label>>,
     }
 
     #[glib::object_subclass]
@@ -506,8 +512,10 @@ impl DrillWindow {
             ring.add_css_class("onion-ring");
 
             let is_edge_layer = index == 0 || index + 1 == layers.len();
+            let is_selected_layer = self.imp().selected_layer_number.get() == layer.number;
             match layer.state {
                 LayerState::Active => ring.add_css_class("onion-layer-active"),
+                _ if is_selected_layer => ring.add_css_class("onion-layer-selected"),
                 LayerState::Done if is_edge_layer => ring.add_css_class("onion-layer-done"),
                 LayerState::Done | LayerState::Idle => {}
             }
@@ -516,11 +524,10 @@ impl DrillWindow {
 
             let click = gtk::GestureClick::new();
             let window = self.downgrade();
-            let current_label = layer.current_label.clone();
-            let detail = layer.detail.clone();
+            let selected_layer = layer.clone();
             click.connect_pressed(move |_, _, _, _| {
                 if let Some(window) = window.upgrade() {
-                    window.show_onion_layer(&current_label, &detail);
+                    window.select_onion_layer(&selected_layer);
                 }
             });
             ring.add_controller(click);
@@ -538,6 +545,7 @@ impl DrillWindow {
 
             match layer.state {
                 LayerState::Active => number.add_css_class("onion-layer-number-active"),
+                _ if is_selected_layer => number.add_css_class("onion-layer-number-active"),
                 LayerState::Done if is_edge_layer => {
                     number.add_css_class("onion-layer-number-done")
                 }
@@ -546,11 +554,10 @@ impl DrillWindow {
 
             let click = gtk::GestureClick::new();
             let window = self.downgrade();
-            let current_label = layer.current_label.clone();
-            let detail = layer.detail.clone();
+            let selected_layer = layer.clone();
             click.connect_pressed(move |_, _, _, _| {
                 if let Some(window) = window.upgrade() {
-                    window.show_onion_layer(&current_label, &detail);
+                    window.select_onion_layer(&selected_layer);
                 }
             });
             number.add_controller(click);
@@ -572,6 +579,16 @@ impl DrillWindow {
         imp.onion_layer_detail_label.set_label(detail);
     }
 
+    fn select_onion_layer(&self, layer: &LayerSpec) {
+        self.imp().selected_layer_number.set(layer.number);
+        self.show_onion_layer(&layer.current_label, &layer.detail);
+        self.set_tree_items(&tree_items_for_layer(layer.number));
+        self.imp()
+            .tree_summary_label
+            .set_label(&tree_summary_for_layer(layer.number));
+        self.refresh_onion_viewport();
+    }
+
     fn set_tree_items(&self, items: &[TreeItem]) {
         let imp = self.imp();
 
@@ -579,11 +596,18 @@ impl DrillWindow {
             imp.tree_rows_box.remove(&child);
         }
 
+        imp.selected_tree_name.replace(None);
+
         for item in items {
             let (depth, connector) = tree_branch_parts(item.branch);
+            let is_selectable = !item.branch.is_empty();
             let row = gtk::Box::new(gtk::Orientation::Horizontal, 3);
             row.set_hexpand(true);
             row.add_css_class("tree-row");
+
+            if is_selectable {
+                row.add_css_class("tree-row-clickable");
+            }
 
             let indent = gtk::Box::new(gtk::Orientation::Horizontal, 0);
             indent.set_width_request(depth * 14);
@@ -610,8 +634,30 @@ impl DrillWindow {
             name.add_css_class("tree-name");
             row.append(&name);
 
+            if is_selectable {
+                let click = gtk::GestureClick::new();
+                let window = self.downgrade();
+                let selected_name = name.clone();
+                click.connect_pressed(move |_, _, _, _| {
+                    if let Some(window) = window.upgrade() {
+                        window.select_tree_name(&selected_name);
+                    }
+                });
+                row.add_controller(click);
+            }
+
             imp.tree_rows_box.append(&row);
         }
+    }
+
+    fn select_tree_name(&self, name: &gtk::Label) {
+        let imp = self.imp();
+
+        if let Some(previous_name) = imp.selected_tree_name.borrow_mut().replace(name.clone()) {
+            previous_name.remove_css_class("tree-name-selected");
+        }
+
+        name.add_css_class("tree-name-selected");
     }
 
     fn demo_start_reading(&self) {
@@ -648,6 +694,7 @@ impl DrillWindow {
         let imp = self.imp();
         imp.all_layers.replace(vec![]);
         imp.layer_offset.set(0);
+        imp.selected_layer_number.set(0);
         imp.zoom_in_button.set_sensitive(false);
         imp.zoom_out_button.set_sensitive(false);
         imp.zoom_page_label.set_label("–");
@@ -709,6 +756,8 @@ impl DrillWindow {
         self.clear_onion_state_classes();
 
         imp.read_status_label.set_label(&gettext("File read"));
+        imp.selected_layer_number
+            .set(PROJECT_TREE_ITEMS.len().max(MAX_VISIBLE_LAYERS));
         self.set_tree_items(PROJECT_TREE_ITEMS);
         let layer_count = PROJECT_TREE_ITEMS.len().max(MAX_VISIBLE_LAYERS);
         self.set_onion_layers_full(demo_layers(
@@ -765,6 +814,20 @@ fn tree_branch_parts(branch: &str) -> (i32, &'static str) {
     };
 
     (depth, connector)
+}
+
+fn tree_items_for_layer(layer_number: usize) -> Vec<TreeItem> {
+    let item_count = layer_number.clamp(1, PROJECT_TREE_ITEMS.len());
+    PROJECT_TREE_ITEMS[..item_count].to_vec()
+}
+
+fn tree_summary_for_layer(layer_number: usize) -> String {
+    let visible_items = layer_number.min(PROJECT_TREE_ITEMS.len());
+    // TRANSLATORS: the first %d is the selected layer number, the second %d is
+    // the amount of tree entries visible for that layer.
+    gettext("Layer %d selected: showing %d tree entries.")
+        .replacen("%d", &layer_number.to_string(), 1)
+        .replacen("%d", &visible_items.to_string(), 1)
 }
 
 /// Returns a translated string like "Layer {n}" using the template
