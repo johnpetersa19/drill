@@ -1,1 +1,1 @@
-i18n.gettext('drill', preset: 'glib')
+i18n.gettext('temporal-explorer', preset: 'glib')

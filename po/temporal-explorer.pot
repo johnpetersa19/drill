@@ -2,15 +2,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: temporal-explorer 0.1.0\n"
 "POT-Creation-Date: 2026-06-28 11:17-0300\n"
-"PO-Revision-Date: 2026-06-28 00:06-0300\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: ru\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: /home/john/Projects/Temporal-Explorer/po/../src/application.rs:148
 msgid "translator-credits"
@@ -184,18 +182,21 @@ msgid "Name"
 msgstr ""
 
 #: /home/john/Projects/Temporal-Explorer/po/../src/node_properties_dialog.rs:225
-#: src/preferences-dialog.blp:160 src/view-controls.blp:55
+#: src/preferences-dialog.blp:160
+#: src/view-controls.blp:55
 msgid "Type"
 msgstr ""
 
 #: /home/john/Projects/Temporal-Explorer/po/../src/node_properties_dialog.rs:227
-#: src/column-chooser.blp:41 src/preferences-dialog.blp:159
+#: src/column-chooser.blp:41
+#: src/preferences-dialog.blp:159
 #: src/view-controls.blp:49
 msgid "Size"
 msgstr ""
 
 #: /home/john/Projects/Temporal-Explorer/po/../src/node_properties_dialog.rs:229
-#: src/clone-repository-dialog.blp:48 src/node-properties-dialog.blp:150
+#: src/clone-repository-dialog.blp:48
+#: src/node-properties-dialog.blp:150
 #: src/preferences-dialog.blp:19
 msgid "Repository"
 msgstr ""
@@ -483,7 +484,8 @@ msgid "applied to all"
 msgstr ""
 
 #: /home/john/Projects/Temporal-Explorer/po/../src/window.rs:2312
-#: src/toolbar.blp:99 src/toolbar.blp:117
+#: src/toolbar.blp:99
+#: src/toolbar.blp:117
 msgid "Open Repository"
 msgstr ""
 
@@ -581,7 +583,8 @@ msgid "Visible Columns…"
 msgstr ""
 
 #: /home/john/Projects/Temporal-Explorer/po/../src/window.rs:3375
-#: src/toolbar.blp:176 src/view-controls.blp:71
+#: src/toolbar.blp:176
+#: src/view-controls.blp:71
 msgid "Captions…"
 msgstr ""
 
@@ -608,7 +611,8 @@ msgstr ""
 
 #: /home/john/Projects/Temporal-Explorer/po/../src/window.rs:3398
 #: /home/john/Projects/Temporal-Explorer/po/../src/window.rs:3455
-#: src/node-properties-dialog.blp:5 src/toolbar.blp:193
+#: src/node-properties-dialog.blp:5
+#: src/toolbar.blp:193
 msgid "Properties"
 msgstr ""
 
@@ -783,10 +787,14 @@ msgstr ""
 msgid "Batch Operations"
 msgstr ""
 
-#: src/batch-operations-dialog.blp:31 src/clone-repository-dialog.blp:16
-#: src/date-range-dialog.blp:45 src/filter-types-dialog.blp:28
-#: src/merge-conflict-dialog.blp:24 src/new-branch-dialog.blp:16
-#: src/operation-progress-dialog.blp:40 src/select-commits-by-pattern.blp:30
+#: src/batch-operations-dialog.blp:31
+#: src/clone-repository-dialog.blp:16
+#: src/date-range-dialog.blp:45
+#: src/filter-types-dialog.blp:28
+#: src/merge-conflict-dialog.blp:24
+#: src/new-branch-dialog.blp:16
+#: src/operation-progress-dialog.blp:40
+#: src/select-commits-by-pattern.blp:30
 msgid "_Cancel"
 msgstr ""
 
@@ -854,7 +862,8 @@ msgstr ""
 msgid "Delete branch"
 msgstr ""
 
-#: src/clone-repository-dialog.blp:5 src/clone-repository-dialog.blp:32
+#: src/clone-repository-dialog.blp:5
+#: src/clone-repository-dialog.blp:32
 msgid "Clone Repository"
 msgstr ""
 
@@ -863,8 +872,7 @@ msgid "_Clone"
 msgstr ""
 
 #: src/clone-repository-dialog.blp:49
-msgid ""
-"Clone the Git repository locally, then load its history in Temporal Explorer."
+msgid "Clone the Git repository locally, then load its history in Temporal Explorer."
 msgstr ""
 
 #: src/clone-repository-dialog.blp:52
@@ -891,7 +899,8 @@ msgstr ""
 msgid "Choose Columns"
 msgstr ""
 
-#: src/column-chooser.blp:13 src/column-chooser.blp:26
+#: src/column-chooser.blp:13
+#: src/column-chooser.blp:26
 msgid "Visible Columns"
 msgstr ""
 
@@ -899,7 +908,8 @@ msgstr ""
 msgid "Choose which columns to show in list view."
 msgstr ""
 
-#: src/column-chooser.blp:35 src/file-grid-captions-dialog.blp:41
+#: src/column-chooser.blp:35
+#: src/file-grid-captions-dialog.blp:41
 msgid "Status"
 msgstr ""
 
@@ -907,7 +917,8 @@ msgstr ""
 msgid "Added / Modified / Deleted"
 msgstr ""
 
-#: src/column-chooser.blp:46 src/file-grid-captions-dialog.blp:46
+#: src/column-chooser.blp:46
+#: src/file-grid-captions-dialog.blp:46
 msgid "Extension"
 msgstr ""
 
@@ -919,7 +930,8 @@ msgstr ""
 msgid "Copy commit SHA"
 msgstr ""
 
-#: src/date-range-dialog.blp:28 src/search-filter-popover.blp:174
+#: src/date-range-dialog.blp:28
+#: src/search-filter-popover.blp:174
 msgid "Custom Date Range"
 msgstr ""
 
@@ -955,7 +967,8 @@ msgstr ""
 msgid "_Apply Filter"
 msgstr ""
 
-#: src/file-grid-captions-dialog.blp:13 src/preferences-dialog.blp:173
+#: src/file-grid-captions-dialog.blp:13
+#: src/preferences-dialog.blp:173
 msgid "Grid Captions"
 msgstr ""
 
@@ -987,11 +1000,13 @@ msgstr ""
 msgid "Date Modified"
 msgstr ""
 
-#: src/file-list-view.blp:38 src/views/file-list-view.blp:38
+#: src/file-list-view.blp:38
+#: src/views/file-list-view.blp:38
 msgid "No Files"
 msgstr ""
 
-#: src/file-list-view.blp:39 src/views/file-list-view.blp:39
+#: src/file-list-view.blp:39
+#: src/views/file-list-view.blp:39
 msgid "Select a commit to see its files."
 msgstr ""
 
@@ -1027,7 +1042,8 @@ msgstr ""
 msgid "Try a different search, or press Enter to add a custom extension."
 msgstr ""
 
-#: src/history-controls.blp:12 src/window.blp:24
+#: src/history-controls.blp:12
+#: src/window.blp:24
 msgid "Back"
 msgstr ""
 
@@ -1035,7 +1051,8 @@ msgstr ""
 msgid "Forward"
 msgstr ""
 
-#: src/merge-conflict-dialog.blp:11 src/merge-conflict-dialog.blp:30
+#: src/merge-conflict-dialog.blp:11
+#: src/merge-conflict-dialog.blp:30
 msgid "Merge Conflict"
 msgstr ""
 
@@ -1063,16 +1080,19 @@ msgstr ""
 msgid "Ours (HEAD)"
 msgstr ""
 
-#: src/merge-conflict-dialog.blp:93 src/merge-conflict-dialog.blp:124
+#: src/merge-conflict-dialog.blp:93
+#: src/merge-conflict-dialog.blp:124
 msgid "Commit"
 msgstr ""
 
-#: src/merge-conflict-dialog.blp:98 src/merge-conflict-dialog.blp:129
+#: src/merge-conflict-dialog.blp:98
+#: src/merge-conflict-dialog.blp:129
 #: src/search-filter-popover.blp:225
 msgid "Author"
 msgstr ""
 
-#: src/merge-conflict-dialog.blp:102 src/merge-conflict-dialog.blp:133
+#: src/merge-conflict-dialog.blp:102
+#: src/merge-conflict-dialog.blp:133
 msgid "Date"
 msgstr ""
 
@@ -1100,7 +1120,9 @@ msgstr ""
 msgid "Keep _Both"
 msgstr ""
 
-#: src/new-branch-dialog.blp:5 src/toolbar.blp:107 src/toolbar.blp:127
+#: src/new-branch-dialog.blp:5
+#: src/toolbar.blp:107
+#: src/toolbar.blp:127
 msgid "New Branch"
 msgstr ""
 
@@ -1144,7 +1166,8 @@ msgstr ""
 msgid "Copy Details"
 msgstr ""
 
-#: src/operation-progress-dialog.blp:5 src/operation-progress-dialog.blp:16
+#: src/operation-progress-dialog.blp:5
+#: src/operation-progress-dialog.blp:16
 msgid "Working"
 msgstr ""
 
@@ -1272,24 +1295,29 @@ msgstr ""
 msgid "How files and folders are ordered when browsing a snapshot."
 msgstr ""
 
-#: src/preferences-dialog.blp:155 src/view-controls.blp:25
+#: src/preferences-dialog.blp:155
+#: src/view-controls.blp:25
 msgid "A-Z"
 msgstr ""
 
-#: src/preferences-dialog.blp:156 src/view-controls.blp:31
+#: src/preferences-dialog.blp:156
+#: src/view-controls.blp:31
 msgid "Z-A"
 msgstr ""
 
-#: src/preferences-dialog.blp:157 src/search-filter-popover.blp:117
+#: src/preferences-dialog.blp:157
+#: src/search-filter-popover.blp:117
 #: src/view-controls.blp:37
 msgid "Last Modified"
 msgstr ""
 
-#: src/preferences-dialog.blp:158 src/view-controls.blp:43
+#: src/preferences-dialog.blp:158
+#: src/view-controls.blp:43
 msgid "First Modified"
 msgstr ""
 
-#: src/preferences-dialog.blp:166 src/view-controls.blp:63
+#: src/preferences-dialog.blp:166
+#: src/view-controls.blp:63
 msgid "Show _Hidden Files"
 msgstr ""
 
@@ -1593,7 +1621,8 @@ msgstr ""
 msgid "Passphrase"
 msgstr ""
 
-#: src/ssh-passphrase-dialog.blp:41 src/toolbar.blp:66
+#: src/ssh-passphrase-dialog.blp:41
+#: src/toolbar.blp:66
 msgid "Cancel"
 msgstr ""
 
@@ -1669,7 +1698,8 @@ msgstr ""
 msgid "Zoom In"
 msgstr ""
 
-#: src/window.blp:5 src/window.blp:125
+#: src/window.blp:5
+#: src/window.blp:125
 msgid "Temporal Explorer"
 msgstr ""
 
@@ -1690,9 +1720,7 @@ msgid "No Snapshot Selected"
 msgstr ""
 
 #: src/window.blp:133
-msgid ""
-"Open a Git repository and select a commit from the timeline to browse its "
-"file tree."
+msgid "Open a Git repository and select a commit from the timeline to browse its file tree."
 msgstr ""
 
 #: src/window.blp:178
@@ -1706,3 +1734,4 @@ msgstr ""
 #: src/window.blp:186
 msgid "_About Temporal Explorer"
 msgstr ""
+

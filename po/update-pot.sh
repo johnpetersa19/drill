@@ -1,7 +1,7 @@
 #!/bin/bash
 # po/update-pot.sh
 #
-# Regenerates po/drill.pot by extracting translatable strings
+# Regenerates po/temporal-explorer.pot by extracting translatable strings
 # from ALL sources: Rust (.rs), Blueprint UI (.blp) and native UI (.ui).
 # Syncs LINGUAS <-> .po files and runs msgmerge on every existing .po file.
 #
@@ -12,10 +12,9 @@
 #  Step 1 — Rust source scan (.rs with gettext())
 #  Step 2 — Blueprint scan (.blp) via grep lookbehind: _("..") pattern
 #  Step 3 — Native UI scan (.ui with translatable="yes") via xgettext Glade
-#  Step 4 — Project metadata scan (.desktop/.metainfo/.gschema)
-#  Step 5 — Merge partial .pot files via Python (no msgcat dependency)
-#  Step 6 — POTFILES.in regeneration
-#  Step 7 — Bidirectional LINGUAS <-> .po sync + msgmerge
+#  Step 4 — Merge partial .pot files via Python (no msgcat dependency)
+#  Step 5 — POTFILES.in regeneration
+#  Step 6 — Bidirectional LINGUAS <-> .po sync + msgmerge
 #
 # USAGE
 #   cd <repo root>
@@ -23,10 +22,9 @@
 
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 PO_DIR="$ROOT/po"
-PACKAGE_NAME="drill"
-OUT="$PO_DIR/$PACKAGE_NAME.pot"
+OUT="$PO_DIR/temporal-explorer.pot"
 POTFILES="$PO_DIR/POTFILES.in"
 LINGUAS_FILE="$PO_DIR/LINGUAS"
 TMP="$(mktemp -d)"
@@ -56,7 +54,7 @@ done
 mkdir -p "$PO_DIR"
 [[ -f "$LINGUAS_FILE" ]] || touch "$LINGUAS_FILE"
 
-echo "=== Drill — regenerating .pot ==="
+echo "=== Temporal Explorer — regenerating .pot ==="
 echo ""
 
 PKG_VER=$(grep -m1 '^version' "$ROOT/Cargo.toml" | sed 's/.*= *"//;s/"//')
@@ -147,7 +145,7 @@ write_sorted_linguas() {
 }
 
 # ── 1. Rust files ───────────────────────────────────────────────────────────────
-echo "[1/7] Scanning Rust files (.rs with gettext())..."
+echo "[1/6] Scanning Rust files (.rs with gettext())..."
 mapfile -t RUST_FILES < <(
     while IFS= read -r -d '' f; do
         if grep -q -- 'gettext(' "$f"; then
@@ -158,21 +156,15 @@ mapfile -t RUST_FILES < <(
 echo "   → ${#RUST_FILES[@]} .rs files found"
 
 if [[ ${#RUST_FILES[@]} -gt 0 ]]; then
-    RUST_REL=()
-    for f in "${RUST_FILES[@]}"; do RUST_REL+=("${f#"$ROOT/"}"); done
-
-    (
-        cd "$ROOT"
-        xgettext \
-            --from-code=UTF-8 \
-            --language=C \
-            --keyword=gettext \
-            --add-comments=translators \
-            --package-name="$PACKAGE_NAME" \
-            --package-version="$PKG_VER" \
-            --output="$TMP/rust.pot" \
-            "${RUST_REL[@]}" 2>/dev/null
-    )
+    xgettext \
+        --from-code=UTF-8 \
+        --language=C \
+        --keyword=gettext \
+        --add-comments=translators \
+        --package-name=temporal-explorer \
+        --package-version="$PKG_VER" \
+        --output="$TMP/rust.pot" \
+        "${RUST_FILES[@]}" 2>/dev/null
     RS_COUNT=$(count_po_entries "$TMP/rust.pot")
     echo "   → rust.pot: $RS_COUNT entries"
 else
@@ -180,7 +172,7 @@ else
 fi
 
 # ── 2. Blueprint files (.blp) ───────────────────────────────────────────────────
-echo "[2/7] Scanning Blueprint files (.blp with _(\"...\"))..."
+echo "[2/6] Scanning Blueprint files (.blp with _(\"...\"))..."
 mapfile -t BLP_FILES < <(
     while IFS= read -r -d '' f; do
         if grep -q -- '_("' "$f"; then
@@ -208,18 +200,14 @@ def po_escape(s: str) -> str:
          .replace("\n", "\\n")
     )
 
-# Match Blueprint _("...") and C_("context", "...") strings,
-# including escaped quotes/backslashes.
-gettext_pattern = re.compile(r'_\("((?:\\.|[^"\\])*)"\)')
-pgettext_pattern = re.compile(
-    r'C_\("((?:\\.|[^"\\])*)"\s*,\s*"((?:\\.|[^"\\])*)"\)'
-)
+# Match Blueprint _("...") strings, including escaped quotes/backslashes.
+pattern = re.compile(r'_\("((?:\\.|[^"\\])*)"\)')
 
 for blp in files:
     rel = blp.relative_to(root).as_posix()
     content = blp.read_text(encoding="utf-8", errors="replace")
 
-    for match in gettext_pattern.finditer(content):
+    for match in pattern.finditer(content):
         raw = match.group(1)
 
         # Decode Blueprint-style escapes, then re-escape for PO syntax.
@@ -234,34 +222,12 @@ for blp in files:
         print(f'msgid "{po_escape(decoded)}"')
         print('msgstr ""')
         print()
-
-    for match in pgettext_pattern.finditer(content):
-        raw_context = match.group(1)
-        raw_msgid = match.group(2)
-
-        try:
-            context = ast.literal_eval(f'"{raw_context}"')
-        except Exception:
-            context = raw_context
-
-        try:
-            msgid = ast.literal_eval(f'"{raw_msgid}"')
-        except Exception:
-            msgid = raw_msgid
-
-        line_no = content.count("\n", 0, match.start()) + 1
-
-        print(f"#: {rel}:{line_no}")
-        print(f'msgctxt "{po_escape(context)}"')
-        print(f'msgid "{po_escape(msgid)}"')
-        print('msgstr ""')
-        print()
 PYEOF
 BLP_COUNT=$(count_po_entries "$TMP/blp.entries")
 echo "   → blp.entries: $BLP_COUNT entries"
 
 # ── 3. Native UI files (.ui with translatable="yes") ────────────────────────
-echo "[3/7] Scanning native UI files (.ui with translatable=\"yes\")..."
+echo "[3/6] Scanning native UI files (.ui with translatable=\"yes\")..."
 mapfile -t UI_FILES < <(
     while IFS= read -r -d '' f; do
         if grep -q -- 'translatable="yes"' "$f"; then
@@ -272,102 +238,29 @@ mapfile -t UI_FILES < <(
 echo "   → ${#UI_FILES[@]} .ui files found"
 
 if [[ ${#UI_FILES[@]} -gt 0 ]]; then
-    UI_REL=()
-    for f in "${UI_FILES[@]}"; do UI_REL+=("${f#"$ROOT/"}"); done
-
-    (
-        cd "$ROOT"
-        xgettext \
-            --from-code=UTF-8 \
-            --language=Glade \
-            --add-comments=translators \
-            --package-name="$PACKAGE_NAME" \
-            --package-version="$PKG_VER" \
-            --output="$TMP/ui.pot" \
-            "${UI_REL[@]}" 2>/dev/null || true
-    )
+    xgettext \
+        --from-code=UTF-8 \
+        --language=Glade \
+        --add-comments=translators \
+        --package-name=temporal-explorer \
+        --package-version="$PKG_VER" \
+        --output="$TMP/ui.pot" \
+        "${UI_FILES[@]}" 2>/dev/null || true
 fi
 [[ -f "$TMP/ui.pot" ]] || touch "$TMP/ui.pot"
 UI_COUNT=$(count_po_entries "$TMP/ui.pot")
 echo "   → ui.pot: $UI_COUNT entries"
 
-# ── 4. Project metadata files ────────────────────────────────────────────────
-echo "[4/7] Scanning project metadata files..."
-
-mapfile -t DESKTOP_FILES < <(find "$ROOT/data" -maxdepth 1 -type f -name "*.desktop.in" | LC_ALL=C sort)
-if [[ ${#DESKTOP_FILES[@]} -gt 0 ]]; then
-    DESKTOP_REL=()
-    for f in "${DESKTOP_FILES[@]}"; do DESKTOP_REL+=("${f#"$ROOT/"}"); done
-
-    (
-        cd "$ROOT"
-        xgettext \
-            --from-code=UTF-8 \
-            --language=Desktop \
-            --add-comments=translators \
-            --package-name="$PACKAGE_NAME" \
-            --package-version="$PKG_VER" \
-            --output="$TMP/desktop.pot" \
-            "${DESKTOP_REL[@]}" 2>/dev/null || true
-    )
-fi
-[[ -f "$TMP/desktop.pot" ]] || touch "$TMP/desktop.pot"
-DESKTOP_COUNT=$(count_po_entries "$TMP/desktop.pot")
-echo "   → desktop.pot: $DESKTOP_COUNT entries"
-
-mapfile -t METAINFO_FILES < <(find "$ROOT/data" -maxdepth 1 -type f -name "*.metainfo.xml.in" | LC_ALL=C sort)
-if [[ ${#METAINFO_FILES[@]} -gt 0 && -f /usr/share/gettext/its/metainfo.its ]]; then
-    METAINFO_REL=()
-    for f in "${METAINFO_FILES[@]}"; do METAINFO_REL+=("${f#"$ROOT/"}"); done
-
-    (
-        cd "$ROOT"
-        xgettext \
-            --from-code=UTF-8 \
-            --its=/usr/share/gettext/its/metainfo.its \
-            --add-comments=translators \
-            --package-name="$PACKAGE_NAME" \
-            --package-version="$PKG_VER" \
-            --output="$TMP/metainfo.pot" \
-            "${METAINFO_REL[@]}" 2>/dev/null || true
-    )
-fi
-[[ -f "$TMP/metainfo.pot" ]] || touch "$TMP/metainfo.pot"
-METAINFO_COUNT=$(count_po_entries "$TMP/metainfo.pot")
-echo "   → metainfo.pot: $METAINFO_COUNT entries"
-
-mapfile -t GSCHEMA_FILES < <(find "$ROOT/data" -maxdepth 1 -type f -name "*.gschema.xml" | LC_ALL=C sort)
-if [[ ${#GSCHEMA_FILES[@]} -gt 0 && -f /usr/share/gettext/its/gschema.its ]]; then
-    GSCHEMA_REL=()
-    for f in "${GSCHEMA_FILES[@]}"; do GSCHEMA_REL+=("${f#"$ROOT/"}"); done
-
-    (
-        cd "$ROOT"
-        xgettext \
-            --from-code=UTF-8 \
-            --its=/usr/share/gettext/its/gschema.its \
-            --add-comments=translators \
-            --package-name="$PACKAGE_NAME" \
-            --package-version="$PKG_VER" \
-            --output="$TMP/gschema.pot" \
-            "${GSCHEMA_REL[@]}" 2>/dev/null || true
-    )
-fi
-[[ -f "$TMP/gschema.pot" ]] || touch "$TMP/gschema.pot"
-GSCHEMA_COUNT=$(count_po_entries "$TMP/gschema.pot")
-echo "   → gschema.pot: $GSCHEMA_COUNT entries"
-
-# ── 5. Merge via Python (sem dependencia de msgcat) ──────────────────────────
-echo "[5/7] Merging partial POT files..."
-python3 - "$TMP/rust.pot" "$TMP/blp.entries" "$TMP/ui.pot" \
-         "$TMP/desktop.pot" "$TMP/metainfo.pot" "$TMP/gschema.pot" \
-         "$OUT" "$PACKAGE_NAME" "$PKG_VER" "$DATE" << 'PYEOF'
+# ── 4. Merge via Python (sem dependencia de msgcat) ────────────────────────────
+echo "[4/6] Merging rust.pot + blp.entries + ui.pot..."
+python3 - "$TMP/rust.pot" "$TMP/blp.entries" "$TMP/ui.pot" "$OUT" \
+         "$PKG_VER" "$DATE" << 'PYEOF'
 import sys, re, os
 
-*input_paths, out_path, package_name, pkg_ver, date = sys.argv[1:]
+rust_pot, blp_entries, ui_pot, out_path, pkg_ver, date = sys.argv[1:]
 
 def extract_entries(path):
-    """Return list of (refs, msgctxt, msgid) from a .pot/.entries file, skip header."""
+    """Return list of (refs, msgid) from a .pot/.entries file, skip header."""
     entries = []
     if not os.path.exists(path) or os.path.getsize(path) == 0:
         return entries
@@ -377,14 +270,12 @@ def extract_entries(path):
     blocks = re.split(r'\n{2,}', content.strip())
     for block in blocks:
         lines = block.strip().splitlines()
-        msgctxt_match = re.search(r'^msgctxt "(.+)"$', block, re.MULTILINE)
         msgid_match = re.search(r'^msgid "(.+)"$', block, re.MULTILINE)
         if not msgid_match:
             continue  # skip header block (msgid "")
-        msgctxt = msgctxt_match.group(1) if msgctxt_match else None
         msgid = msgid_match.group(1)
         refs = [l.strip() for l in lines if l.startswith('#:')]
-        entries.append((refs, msgctxt, msgid))
+        entries.append((refs, msgid))
     return entries
 
 def po_escape(s):
@@ -399,19 +290,18 @@ def po_escape(s):
 seen = {}
 ordered = []
 
-for path in input_paths:
-    for refs, msgctxt, msgid in extract_entries(path):
-        key = (msgctxt, msgid)
-        if key not in seen:
-            seen[key] = refs
-            ordered.append(key)
+for path in [rust_pot, blp_entries, ui_pot]:
+    for refs, msgid in extract_entries(path):
+        if msgid not in seen:
+            seen[msgid] = refs
+            ordered.append(msgid)
         else:
-            seen[key] = seen[key] + refs
+            seen[msgid] = seen[msgid] + refs
 
 with open(out_path, 'w', encoding='utf-8') as f:
     f.write('msgid ""\n')
     f.write('msgstr ""\n')
-    f.write(f'"Project-Id-Version: {package_name} {pkg_ver}\\n"\n')
+    f.write(f'"Project-Id-Version: temporal-explorer {pkg_ver}\\n"\n')
     f.write(f'"POT-Creation-Date: {date}\\n"\n')
     f.write('"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n"\n')
     f.write('"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n"\n')
@@ -421,12 +311,10 @@ with open(out_path, 'w', encoding='utf-8') as f:
     f.write('"Content-Type: text/plain; charset=UTF-8\\n"\n')
     f.write('"Content-Transfer-Encoding: 8bit\\n"\n')
     f.write('\n')
-    for msgctxt, msgid in ordered:
-        refs = seen[(msgctxt, msgid)]
+    for msgid in ordered:
+        refs = seen[msgid]
         for r in refs:
             f.write(f'{r}\n')
-        if msgctxt is not None:
-            f.write(f'msgctxt "{po_escape(msgctxt)}"\n')
         f.write(f'msgid "{po_escape(msgid)}"\n')
         f.write('msgstr ""\n')
         f.write('\n')
@@ -435,14 +323,11 @@ PYEOF
 
 TOTAL=$(count_po_entries "$OUT")
 
-# ── 6. Update POTFILES.in ────────────────────────────────────────────────────
-echo "[6/7] Updating POTFILES.in..."
+# ── 5. Update POTFILES.in ────────────────────────────────────────────────────────
+echo "[5/6] Updating POTFILES.in..."
 {
     echo "# Auto-generated by po/update-pot.sh — do not edit manually"
     echo ""
-    for f in "${DESKTOP_FILES[@]}";  do echo "${f#"$ROOT/"}"; done
-    for f in "${GSCHEMA_FILES[@]}";  do echo "${f#"$ROOT/"}"; done
-    for f in "${METAINFO_FILES[@]}"; do echo "${f#"$ROOT/"}"; done
     for f in "${RUST_FILES[@]}"; do echo "${f#"$ROOT/"}"; done
     for f in "${BLP_FILES[@]}";  do echo "${f#"$ROOT/"}"; done
     for f in "${UI_FILES[@]}";   do echo "${f#"$ROOT/"}"; done
@@ -452,11 +337,11 @@ echo "[6/7] Updating POTFILES.in..."
     echo ""
     cat "$TMP/pf_sorted"
 } > "$POTFILES"
-PF_COUNT=$(grep -Ec '^(data|src)/' "$POTFILES" 2>/dev/null || echo 0)
+PF_COUNT=$(grep -c '^src/' "$POTFILES" 2>/dev/null || echo 0)
 echo "   → POTFILES.in updated ($PF_COUNT files)"
 
-# ── 7. Sync LINGUAS <-> .po + msgmerge ───────────────────────────────────────
-echo "[7/7] Syncing LINGUAS <-> .po files..."
+# ── 6. Sync LINGUAS <-> .po + msgmerge ─────────────────────────────────────────
+echo "[6/6] Syncing LINGUAS <-> .po files..."
 
 declare -A LINGUAS_SET
 
@@ -507,7 +392,7 @@ write_sorted_linguas "$LINGUAS_FILE" "${FINAL_LANGS[@]}"
 echo ""
 echo "✓ Generated : $OUT"
 echo "✓ Entries   : $TOTAL"
-echo "✓ Version   : $PACKAGE_NAME $PKG_VER"
+echo "✓ Version   : temporal-explorer $PKG_VER"
 LANGUAGE_LIST="$(clean_linguas_file "$LINGUAS_FILE" | tr '\n' ' ' | xargs)"
 echo "✓ Languages : $LANGUAGE_LIST"
 
