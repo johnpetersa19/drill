@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: drill 0.1.0\n"
 "POT-Creation-Date: 2026-06-30 20:16-0300\n"
-"PO-Revision-Date: 2026-06-29 20:32-0300\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-06-30 20:20-0300\n"
+"Last-Translator: John Peter Sa <johnpetersa19@users.noreply.github.com>\n"
+"Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -13,208 +13,208 @@ msgstr ""
 
 #: src/application.rs:115
 msgid "translator-credits"
-msgstr ""
+msgstr "John Peter Sa"
 
 #: src/application.rs:127
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: src/application.rs:128
 msgid "Preferences not yet implemented."
-msgstr ""
+msgstr "Preferências ainda não implementadas."
 
 #: src/application.rs:130
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: src/window.rs:56
 msgid "No project tree yet."
-msgstr ""
+msgstr "Nenhuma árvore de projeto ainda."
 
 #: src/window.rs:665 src/window.blp:156
 msgid "Waiting for file"
-msgstr ""
+msgstr "Aguardando arquivo"
 
 #: src/window.rs:669 src/window.blp:172
 msgid "Waiting for analysis."
-msgstr ""
+msgstr "Aguardando análise."
 
 #: src/window.rs:671 src/window.blp:305
 msgid "Current layer: waiting"
-msgstr ""
+msgstr "Camada atual: aguardando"
 
 #: src/window.rs:673 src/window.blp:314
 msgid "Select a layer to inspect it."
-msgstr ""
+msgstr "Selecione uma camada para inspecioná-la."
 
 #: src/window.rs:685
 msgid "Reading file..."
-msgstr ""
+msgstr "Lendo arquivo..."
 
 #: src/window.rs:690
 msgid "Layer 1"
-msgstr ""
+msgstr "Camada 1"
 
 #: src/window.rs:691 src/window.rs:697
 msgid "Current layer: file"
-msgstr ""
+msgstr "Camada atual: arquivo"
 
 #: src/window.rs:692 src/window.rs:699
 msgid "Layer 1: file under reading."
-msgstr ""
+msgstr "Camada 1: arquivo em leitura."
 
 #: src/window.rs:695
 msgid "Building the first tree level..."
-msgstr ""
+msgstr "Construindo o primeiro nível da árvore..."
 
 #: src/window.rs:711
 msgid "File read"
-msgstr ""
+msgstr "Arquivo lido"
 
 #: src/window.rs:717
 msgid "Core"
-msgstr ""
+msgstr "Núcleo"
 
 #: src/window.rs:718 src/window.rs:725
 msgid "Current layer: first level"
-msgstr ""
+msgstr "Camada atual: primeiro nível"
 
 #: src/window.rs:719 src/window.rs:727
 msgid "Layer 3: first data detected during reading."
-msgstr ""
+msgstr "Camada 3: primeiros dados detectados durante a leitura."
 
 #: src/window.rs:722
 msgid "Project tree ready: build files, generated metadata and resources."
-msgstr ""
+msgstr "Árvore do projeto pronta: arquivos de build, metadados gerados e recursos."
 
 #: src/window.rs:741
 msgid "Error reading file"
-msgstr ""
+msgstr "Erro ao ler o arquivo"
 
 #: src/window.rs:743
 msgid "The project tree could not be generated."
-msgstr ""
+msgstr "A árvore do projeto não pôde ser gerada."
 
 #: src/window.rs:745
 msgid "Current layer: error"
-msgstr ""
+msgstr "Camada atual: erro"
 
 #: src/window.rs:747
 msgid "The selected layer could not be read."
-msgstr ""
+msgstr "A camada selecionada não pôde ser lida."
 
 #: src/shortcuts-dialog.blp:6
 msgid "Shortcuts"
-msgstr ""
+msgstr "Atalhos"
 
 #: src/shortcuts-dialog.blp:9
 msgctxt "shortcut window"
 msgid "Show Shortcuts"
-msgstr ""
+msgstr "Mostrar atalhos"
 
 #: src/shortcuts-dialog.blp:14
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
 
 #: src/window.blp:5 src/window.blp:13
 #: data/io.github.johnpetersa.Drill.desktop.in:2
 #: data/io.github.johnpetersa.Drill.metainfo.xml.in:7
 msgid "Drill"
-msgstr ""
+msgstr "Drill"
 
 #: src/window.blp:14
 msgid "Layered reading"
-msgstr ""
+msgstr "Leitura em camadas"
 
 #: src/window.blp:21
 msgid "Main menu"
-msgstr ""
+msgstr "Menu principal"
 
 #: src/window.blp:65
 msgid "Reading panel"
-msgstr ""
+msgstr "Painel de leitura"
 
 #: src/window.blp:74
 msgid "Choose a file or folder to start the visual analysis."
-msgstr ""
+msgstr "Escolha um arquivo ou pasta para iniciar a análise visual."
 
 #: src/window.blp:102
 msgid "Project tree"
-msgstr ""
+msgstr "Árvore do projeto"
 
 #: src/window.blp:132
 msgid "Reading"
-msgstr ""
+msgstr "Leitura"
 
 #: src/window.blp:205
 msgid "Layers"
-msgstr ""
+msgstr "Camadas"
 
 #: src/window.blp:214
 msgid "Project onion"
-msgstr ""
+msgstr "Cebola do projeto"
 
 #: src/window.blp:267
 msgid "Zoom − (previous layers)"
-msgstr ""
+msgstr "Zoom − (camadas anteriores)"
 
 #: src/window.blp:289
 msgid "Zoom + (next layers)"
-msgstr ""
+msgstr "Zoom + (próximas camadas)"
 
 #: src/window.blp:326
 msgid "File → Type → Language → Structure → Dependencies"
-msgstr ""
+msgstr "Arquivo → Tipo → Linguagem → Estrutura → Dependências"
 
 #: src/window.blp:344
 msgid "_Choose file or folder"
-msgstr ""
+msgstr "_Escolher arquivo ou pasta"
 
 #: src/window.blp:351
 msgid "_Preferences"
-msgstr ""
+msgstr "_Preferências"
 
 #: src/window.blp:356
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Atalhos de teclado"
 
 #: src/window.blp:361
 msgid "_About Drill"
-msgstr ""
+msgstr "_Sobre o Drill"
 
 #: data/io.github.johnpetersa.Drill.desktop.in:8
 msgid "binary;analysis;firmware;rom;"
-msgstr ""
+msgstr "binário;análise;firmware;rom;"
 
 #: data/io.github.johnpetersa.Drill.metainfo.xml.in:8
 msgid "Recursive binary analysis tool"
-msgstr ""
+msgstr "Ferramenta de análise binária recursiva"
 
 #: data/io.github.johnpetersa.Drill.metainfo.xml.in:14
 msgid "John Peter Sa"
-msgstr ""
+msgstr "John Peter Sa"
 
 #: data/io.github.johnpetersa.Drill.gschema.xml:6
 msgid "Window width"
-msgstr ""
+msgstr "Largura da janela"
 
 #: data/io.github.johnpetersa.Drill.gschema.xml:7
 msgid "The last saved main window width."
-msgstr ""
+msgstr "A última largura salva da janela principal."
 
 #: data/io.github.johnpetersa.Drill.gschema.xml:11
 msgid "Window height"
-msgstr ""
+msgstr "Altura da janela"
 
 #: data/io.github.johnpetersa.Drill.gschema.xml:12
 msgid "The last saved main window height."
-msgstr ""
+msgstr "A última altura salva da janela principal."
 
 #: data/io.github.johnpetersa.Drill.gschema.xml:16
 msgid "Window maximized state"
-msgstr ""
+msgstr "Estado maximizado da janela"
 
 #: data/io.github.johnpetersa.Drill.gschema.xml:17
 msgid "Whether the main window was maximized when the application last closed."
-msgstr ""
+msgstr "Se a janela principal estava maximizada quando o aplicativo foi fechado pela última vez."
