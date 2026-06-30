@@ -24,7 +24,7 @@ struct TreeItem {
 }
 
 #[derive(Debug, Clone)]
-struct LayerSpec {
+pub(super) struct LayerSpec {
     label: String,
     current_label: String,
     detail: String,
@@ -32,7 +32,7 @@ struct LayerSpec {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum LayerState {
+pub(super) enum LayerState {
     Idle,
     Active,
     Done,
