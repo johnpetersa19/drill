@@ -442,12 +442,13 @@ impl DrillWindow {
 
         imp.read_status_label.set_label(&gettext("Reading file..."));
         self.set_tree_items(READING_TREE_ITEMS);
-        self.set_onion_layers(&[LayerSpec {
-            label: gettext("Layer 1"),
-            current_label: gettext("Current layer: file"),
-            detail: gettext("Layer 1: file under reading."),
-            state: LayerState::Active,
-        }]);
+        self.set_onion_layers(&demo_layers(
+            1,
+            LayerState::Active,
+            gettext("Layer 1"),
+            gettext("Current layer: file"),
+            gettext("Layer 1: file under reading."),
+        ));
         imp.tree_summary_label
             .set_label(&gettext("Building the first tree level..."));
         imp.current_layer_label
@@ -467,40 +468,14 @@ impl DrillWindow {
 
         imp.read_status_label.set_label(&gettext("File read"));
         self.set_tree_items(PROJECT_TREE_ITEMS);
-        self.set_onion_layers(&[
-            LayerSpec {
-                label: gettext("Layer 1"),
-                current_label: gettext("Current layer: file"),
-                detail: gettext("Layer 1: file or folder chosen for reading."),
-                state: LayerState::Done,
-            },
-            LayerSpec {
-                label: gettext("Layer 2"),
-                current_label: gettext("Current layer: type"),
-                detail: gettext("Layer 2: type detected from the content."),
-                state: LayerState::Done,
-            },
-            LayerSpec {
-                label: gettext("Layer 3"),
-                current_label: gettext("Current layer: language"),
-                detail: gettext("Layer 3: main language or format identified."),
-                state: LayerState::Active,
-            },
-            LayerSpec {
-                label: gettext("Layer 4"),
-                current_label: gettext("Current layer: structure"),
-                detail: gettext("Layer 4: internal structure found during analysis."),
-                state: LayerState::Idle,
-            },
-            LayerSpec {
-                label: gettext("Core"),
-                current_label: gettext("Current layer: dependencies"),
-                detail: gettext(
-                    "Core: dependencies and relations extracted from the analyzed layer.",
-                ),
-                state: LayerState::Idle,
-            },
-        ]);
+        let layer_count = PROJECT_TREE_ITEMS.len().max(5);
+        self.set_onion_layers(&demo_layers(
+            layer_count,
+            LayerState::Done,
+            gettext("Core"),
+            gettext("Current layer: first level"),
+            gettext("Layer 3: first data detected during reading."),
+        ));
         imp.tree_summary_label.set_label(&gettext(
             "Project tree ready: build files, generated metadata and resources.",
         ));
@@ -548,4 +523,52 @@ fn tree_branch_parts(branch: &str) -> (i32, &'static str) {
     };
 
     (depth, connector)
+}
+
+fn demo_layers(
+    count: usize,
+    terminal_state: LayerState,
+    terminal_label: String,
+    current_label: String,
+    detail: String,
+) -> Vec<LayerSpec> {
+    let mut layers = Vec::with_capacity(count);
+
+    for index in 0..count {
+        let layer_number = index + 1;
+        let state = if index + 1 == count {
+            terminal_state
+        } else if index < 2 {
+            LayerState::Done
+        } else {
+            LayerState::Idle
+        };
+
+        let label = if index + 1 == count {
+            terminal_label.clone()
+        } else {
+            gettext(&format!("Layer {}", layer_number))
+        };
+
+        let current = if index + 1 == count {
+            current_label.clone()
+        } else {
+            gettext(&format!("Current layer: {}", layer_number))
+        };
+
+        let detail_text = if index + 1 == count {
+            detail.clone()
+        } else {
+            gettext(&format!("Layer {} in the analysis chain.", layer_number))
+        };
+
+        layers.push(LayerSpec {
+            label,
+            current_label: current,
+            detail: detail_text,
+            state,
+        });
+    }
+
+    layers
 }
