@@ -23,6 +23,8 @@ const ONION_LAYER_BADGE_WIDTH: i32 = 18;
 const ONION_LAYER_BADGE_HEIGHT: i32 = 16;
 const ONION_LAYER_BADGE_GAP: usize = 2;
 const ONION_CORE_RING_GAP: i32 = 34;
+/// Inset from the ring's right edge so the badge sits fully inside the ring.
+const ONION_LAYER_BADGE_INSET: f64 = 4.0;
 
 #[derive(Clone)]
 struct TreeItem {
@@ -555,7 +557,10 @@ impl DrillWindow {
 
             let badge_width = ONION_LAYER_BADGE_WIDTH as f64;
             let badge_height = ONION_LAYER_BADGE_HEIGHT as f64;
-            let number_x = offset + size as f64 - badge_width / 2.0;
+            // Place the badge fully inside the ring: right edge of badge sits
+            // ONION_LAYER_BADGE_INSET pixels from the right border of the ring.
+            let ring_right = offset + size as f64;
+            let number_x = ring_right - badge_width - ONION_LAYER_BADGE_INSET;
             let number_y = onion_size as f64 / 2.0 - badge_height / 2.0;
             imp.onion_layers_fixed.put(&number, number_x, number_y);
         }
