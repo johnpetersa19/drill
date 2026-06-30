@@ -23,7 +23,7 @@ struct TreeItem {
     name: Cow<'static, str>,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 struct LayerSpec {
     label: String,
     current_label: String,
@@ -31,7 +31,7 @@ struct LayerSpec {
     state: LayerState,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum LayerState {
     Idle,
     Active,
