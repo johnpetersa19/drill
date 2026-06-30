@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: drill 0.1.0\n"
-"POT-Creation-Date: 2026-06-30 20:29-0300\n"
+"POT-Creation-Date: 2026-06-30 20:54-0300\n"
 "PO-Revision-Date: 2026-06-29 20:32-0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -30,87 +30,91 @@ msgstr ""
 msgid "No project tree yet."
 msgstr ""
 
-#: src/window.rs:665 src/window.blp:156
+#: src/window.rs:712 src/window.blp:156
 msgid "Waiting for file"
 msgstr ""
 
-#: src/window.rs:669 src/window.blp:172
+#: src/window.rs:716 src/window.blp:172
 msgid "Waiting for analysis."
 msgstr ""
 
-#: src/window.rs:671 src/window.blp:305
+#: src/window.rs:718 src/window.blp:305
 msgid "Current layer: waiting"
 msgstr ""
 
-#: src/window.rs:673 src/window.blp:314
+#: src/window.rs:720 src/window.blp:314
 msgid "Select a layer to inspect it."
 msgstr ""
 
-#: src/window.rs:685
+#: src/window.rs:732
 msgid "Reading file..."
 msgstr ""
 
-#: src/window.rs:690
+#: src/window.rs:737
 msgid "Layer 1"
 msgstr ""
 
-#: src/window.rs:691 src/window.rs:697
+#: src/window.rs:738 src/window.rs:744
 msgid "Current layer: file"
 msgstr ""
 
-#: src/window.rs:692 src/window.rs:699
+#: src/window.rs:739 src/window.rs:746
 msgid "Layer 1: file under reading."
 msgstr ""
 
-#: src/window.rs:695
+#: src/window.rs:742
 msgid "Building the first tree level..."
 msgstr ""
 
-#: src/window.rs:711
+#: src/window.rs:758
 msgid "File read"
 msgstr ""
 
-#: src/window.rs:717
+#: src/window.rs:766
 msgid "Core"
 msgstr ""
 
-#: src/window.rs:718 src/window.rs:725
+#: src/window.rs:767 src/window.rs:774
 msgid "Current layer: first level"
 msgstr ""
 
-#: src/window.rs:719 src/window.rs:727
+#: src/window.rs:768 src/window.rs:776
 msgid "Layer 3: first data detected during reading."
 msgstr ""
 
-#: src/window.rs:722
+#: src/window.rs:771
 msgid "Project tree ready: build files, generated metadata and resources."
 msgstr ""
 
-#: src/window.rs:741
+#: src/window.rs:790
 msgid "Error reading file"
 msgstr ""
 
-#: src/window.rs:743
+#: src/window.rs:792
 msgid "The project tree could not be generated."
 msgstr ""
 
-#: src/window.rs:745
+#: src/window.rs:794
 msgid "Current layer: error"
 msgstr ""
 
-#: src/window.rs:747
+#: src/window.rs:796
 msgid "The selected layer could not be read."
 msgstr ""
 
-#: src/window.rs:777
+#: src/window.rs:828
+msgid "Layer %d selected: showing %d tree entries."
+msgstr ""
+
+#: src/window.rs:840
 msgid "Layer %d"
 msgstr ""
 
-#: src/window.rs:785
+#: src/window.rs:848
 msgid "Current layer: %d"
 msgstr ""
 
-#: src/window.rs:793
+#: src/window.rs:856
 msgid "Layer %d in the analysis chain."
 msgstr ""
 
