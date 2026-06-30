@@ -6,6 +6,11 @@
   background: transparent;
 }
 
+.main-split > separator {
+  min-width: 1px;
+  background-color: @borders;
+}
+
 .drill-card {
   padding: 18px;
   border-radius: 18px;
@@ -114,6 +119,26 @@
   border-radius: 999px;
   background-color: transparent;
   border: 2px solid alpha(@accent_bg_color, 0.28);
+}
+
+.onion-layer-number {
+  padding: 0;
+  border-radius: 4px;
+  background-color: alpha(black, 0.38);
+  color: alpha(white, 0.92);
+  font-size: 8px;
+  font-weight: 800;
+  box-shadow: 0 0 0 1.5px alpha(white, 0.88);
+}
+
+.onion-layer-number-active {
+  color: white;
+  box-shadow: 0 0 0 1.5px white;
+}
+
+.onion-layer-number-done {
+  color: @success_color;
+  box-shadow: 0 0 0 1.5px @success_color;
 }
 
 .onion-ring-5 {

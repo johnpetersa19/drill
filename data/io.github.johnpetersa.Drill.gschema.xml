@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="drill">
 	<schema id="io.github.johnpetersa.Drill" path="/io/github/johnpetersa/Drill/">
+		<key name="window-width" type="i">
+			<default>1120</default>
+			<summary>Window width</summary>
+			<description>The last saved main window width.</description>
+		</key>
+		<key name="window-height" type="i">
+			<default>720</default>
+			<summary>Window height</summary>
+			<description>The last saved main window height.</description>
+		</key>
+		<key name="window-maximized" type="b">
+			<default>false</default>
+			<summary>Window maximized state</summary>
+			<description>Whether the main window was maximized when the application last closed.</description>
+		</key>
 	</schema>
 </schemalist>

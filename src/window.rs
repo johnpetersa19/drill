@@ -13,8 +13,16 @@ use gtk::{gio, glib};
 use std::borrow::Cow;
 use std::cell::{Cell, RefCell};
 
-/// How many onion rings are visible at once.
-const VISIBLE_LAYERS: usize = 10;
+const MIN_VISIBLE_LAYERS: usize = 2;
+const MAX_VISIBLE_LAYERS: usize = 10;
+const DEFAULT_ONION_SIZE: i32 = 340;
+const MIN_ONION_SIZE: i32 = 260;
+const MAX_ONION_SIZE: i32 = 560;
+const ONION_CORE_SIZE: i32 = 84;
+const ONION_LAYER_BADGE_WIDTH: i32 = 18;
+const ONION_LAYER_BADGE_HEIGHT: i32 = 16;
+const ONION_LAYER_BADGE_GAP: usize = 2;
+const ONION_CORE_RING_GAP: i32 = 34;
 
 #[derive(Clone)]
 struct TreeItem {
@@ -25,6 +33,7 @@ struct TreeItem {
 
 #[derive(Debug, Clone)]
 pub(super) struct LayerSpec {
+    number: usize,
     label: String,
     current_label: String,
     detail: String,
@@ -182,7 +191,7 @@ mod imp {
     #[template(resource = "/io/github/johnpetersa/Drill/window.ui")]
     pub struct DrillWindow {
         #[template_child]
-        pub read_status_dot: TemplateChild<gtk::Box>,
+        pub read_status_dot: TemplateChild<adw::Bin>,
 
         #[template_child]
         pub read_status_label: TemplateChild<gtk::Label>,
@@ -194,6 +203,9 @@ mod imp {
         pub tree_summary_label: TemplateChild<gtk::Label>,
 
         #[template_child]
+        pub main_paned: TemplateChild<gtk::Paned>,
+
+        #[template_child]
         pub current_layer_label: TemplateChild<gtk::Label>,
 
         #[template_child]
@@ -203,7 +215,10 @@ mod imp {
         pub onion_layers_fixed: TemplateChild<gtk::Fixed>,
 
         #[template_child]
-        pub onion_core: TemplateChild<gtk::Box>,
+        pub onion_overlay: TemplateChild<gtk::Overlay>,
+
+        #[template_child]
+        pub onion_core: TemplateChild<adw::Bin>,
 
         #[template_child]
         pub zoom_in_button: TemplateChild<gtk::Button>,
@@ -215,7 +230,7 @@ mod imp {
         pub zoom_page_label: TemplateChild<gtk::Label>,
 
         /// Full list of layers from the last call to `set_onion_layers_full`.
-        pub all_layers: RefCell<Vec<LayerSpec>>,
+        pub(super) all_layers: RefCell<Vec<LayerSpec>>,
 
         /// Index of the first visible layer in `all_layers`.
         pub layer_offset: Cell<usize>,
@@ -242,7 +257,10 @@ mod imp {
 
             let obj = self.obj();
             obj.load_css();
+            obj.restore_window_state();
             obj.setup_window_actions();
+            obj.setup_window_state_saving();
+            obj.setup_dynamic_layers();
             obj.setup_zoom_buttons();
             obj.set_read_idle();
         }
@@ -265,6 +283,35 @@ impl DrillWindow {
         glib::Object::builder()
             .property("application", application)
             .build()
+    }
+
+    fn settings() -> gio::Settings {
+        gio::Settings::new("io.github.johnpetersa.Drill")
+    }
+
+    fn restore_window_state(&self) {
+        let settings = Self::settings();
+        self.set_default_size(settings.int("window-width"), settings.int("window-height"));
+
+        if settings.boolean("window-maximized") {
+            self.maximize();
+        }
+    }
+
+    fn setup_window_state_saving(&self) {
+        self.connect_close_request(|window| {
+            window.save_window_state();
+            glib::Propagation::Proceed
+        });
+    }
+
+    fn save_window_state(&self) {
+        let settings = Self::settings();
+        let (width, height) = self.default_size();
+
+        let _ = settings.set_int("window-width", width);
+        let _ = settings.set_int("window-height", height);
+        let _ = settings.set_boolean("window-maximized", self.is_maximized());
     }
 
     fn load_css(&self) {
@@ -294,6 +341,26 @@ impl DrillWindow {
         self.add_action_entries([choose_target_action]);
     }
 
+    fn setup_dynamic_layers(&self) {
+        let imp = self.imp();
+
+        imp.main_paned.connect_position_notify(glib::clone!(
+            #[weak(rename_to = window)]
+            self,
+            move |_| {
+                window.refresh_onion_viewport();
+            }
+        ));
+
+        glib::idle_add_local_once(glib::clone!(
+            #[weak(rename_to = window)]
+            self,
+            move || {
+                window.refresh_onion_viewport();
+            }
+        ));
+    }
+
     fn setup_zoom_buttons(&self) {
         let imp = self.imp();
 
@@ -304,7 +371,8 @@ impl DrillWindow {
                 let imp = window.imp();
                 let total = imp.all_layers.borrow().len();
                 let offset = imp.layer_offset.get();
-                let new_offset = (offset + 1).min(total.saturating_sub(VISIBLE_LAYERS));
+                let visible_layers = window.visible_layer_count(total);
+                let new_offset = (offset + 1).min(total.saturating_sub(visible_layers));
                 imp.layer_offset.set(new_offset);
                 window.refresh_onion_viewport();
             }
@@ -332,14 +400,46 @@ impl DrillWindow {
         self.refresh_onion_viewport();
     }
 
+    fn onion_size(&self) -> i32 {
+        let imp = self.imp();
+        let paned_width = imp.main_paned.width();
+        let right_width = paned_width.saturating_sub(imp.main_paned.position());
+        let available_width = if right_width > 0 {
+            right_width.saturating_sub(64)
+        } else {
+            DEFAULT_ONION_SIZE
+        };
+
+        available_width.clamp(MIN_ONION_SIZE, MAX_ONION_SIZE)
+    }
+
+    fn visible_layer_count(&self, total: usize) -> usize {
+        if total == 0 {
+            return 0;
+        }
+
+        let min_ring_size = ONION_CORE_SIZE + ONION_CORE_RING_GAP * 2;
+        let available_ring_space =
+            self.onion_size().saturating_sub(44 + min_ring_size) as usize / 2;
+        let by_size =
+            (available_ring_space / (ONION_LAYER_BADGE_WIDTH as usize + ONION_LAYER_BADGE_GAP)) + 1;
+
+        by_size
+            .clamp(MIN_VISIBLE_LAYERS, MAX_VISIBLE_LAYERS)
+            .min(total)
+    }
+
     /// Re-render rings using the current offset and update zoom button sensitivity.
     fn refresh_onion_viewport(&self) {
         let imp = self.imp();
         let all = imp.all_layers.borrow();
         let total = all.len();
-        let offset = imp.layer_offset.get();
+        let visible_layers = self.visible_layer_count(total);
+        let max_offset = total.saturating_sub(visible_layers);
+        let offset = imp.layer_offset.get().min(max_offset);
+        imp.layer_offset.set(offset);
 
-        let end = (offset + VISIBLE_LAYERS).min(total);
+        let end = (offset + visible_layers).min(total);
         let visible: Vec<LayerSpec> = all[offset..end].to_vec();
 
         drop(all); // release borrow before calling set_onion_rings
@@ -348,16 +448,17 @@ impl DrillWindow {
         let imp = self.imp();
         let total = imp.all_layers.borrow().len();
         let offset = imp.layer_offset.get();
+        let visible_layers = self.visible_layer_count(total);
 
         imp.zoom_out_button.set_sensitive(offset > 0);
         imp.zoom_in_button
-            .set_sensitive(offset + VISIBLE_LAYERS < total);
+            .set_sensitive(offset + visible_layers < total);
 
         if total == 0 {
             imp.zoom_page_label.set_label("–");
         } else {
             let first = offset + 1;
-            let last = (offset + VISIBLE_LAYERS).min(total);
+            let last = (offset + visible_layers).min(total);
             imp.zoom_page_label
                 .set_label(&format!("{first}–{last} / {total}"));
         }
@@ -379,8 +480,14 @@ impl DrillWindow {
         }
 
         let imp = self.imp();
-        let outer_size = 320.0_f64;
-        let inner_size = 88.0_f64;
+        let onion_size = self.onion_size();
+        let outer_size = (onion_size - 44) as f64;
+        let inner_size = (ONION_CORE_SIZE + ONION_CORE_RING_GAP * 2) as f64;
+        imp.onion_overlay.set_width_request(onion_size);
+        imp.onion_overlay.set_height_request(onion_size);
+        imp.onion_layers_fixed.set_width_request(onion_size);
+        imp.onion_layers_fixed.set_height_request(onion_size);
+
         let step = if layers.len() > 1 {
             (outer_size - inner_size) / (layers.len() as f64 - 1.0)
         } else {
@@ -396,10 +503,11 @@ impl DrillWindow {
             ring.set_height_request(size);
             ring.add_css_class("onion-ring");
 
+            let is_edge_layer = index == 0 || index + 1 == layers.len();
             match layer.state {
                 LayerState::Active => ring.add_css_class("onion-layer-active"),
-                LayerState::Done => ring.add_css_class("onion-layer-done"),
-                LayerState::Idle => {}
+                LayerState::Done if is_edge_layer => ring.add_css_class("onion-layer-done"),
+                LayerState::Done | LayerState::Idle => {}
             }
 
             ring.set_tooltip_text(Some(layer.label.as_str()));
@@ -415,8 +523,41 @@ impl DrillWindow {
             });
             ring.add_controller(click);
 
-            let offset = ((340 - size) / 2) as f64;
+            let offset = ((onion_size - size) / 2) as f64;
             imp.onion_layers_fixed.put(&ring, offset, offset);
+
+            let number = gtk::Label::new(Some(&layer.number.to_string()));
+            number.set_halign(gtk::Align::Center);
+            number.set_valign(gtk::Align::Center);
+            number.set_width_request(ONION_LAYER_BADGE_WIDTH);
+            number.set_height_request(ONION_LAYER_BADGE_HEIGHT);
+            number.set_tooltip_text(Some(layer.label.as_str()));
+            number.add_css_class("onion-layer-number");
+
+            match layer.state {
+                LayerState::Active => number.add_css_class("onion-layer-number-active"),
+                LayerState::Done if is_edge_layer => {
+                    number.add_css_class("onion-layer-number-done")
+                }
+                LayerState::Done | LayerState::Idle => {}
+            }
+
+            let click = gtk::GestureClick::new();
+            let window = self.downgrade();
+            let current_label = layer.current_label.clone();
+            let detail = layer.detail.clone();
+            click.connect_pressed(move |_, _, _, _| {
+                if let Some(window) = window.upgrade() {
+                    window.show_onion_layer(&current_label, &detail);
+                }
+            });
+            number.add_controller(click);
+
+            let badge_width = ONION_LAYER_BADGE_WIDTH as f64;
+            let badge_height = ONION_LAYER_BADGE_HEIGHT as f64;
+            let number_x = offset + size as f64 - badge_width / 2.0;
+            let number_y = onion_size as f64 / 2.0 - badge_height / 2.0;
+            imp.onion_layers_fixed.put(&number, number_x, number_y);
         }
     }
 
@@ -564,7 +705,7 @@ impl DrillWindow {
 
         imp.read_status_label.set_label(&gettext("File read"));
         self.set_tree_items(PROJECT_TREE_ITEMS);
-        let layer_count = PROJECT_TREE_ITEMS.len().max(5);
+        let layer_count = PROJECT_TREE_ITEMS.len().max(MAX_VISIBLE_LAYERS);
         self.set_onion_layers_full(demo_layers(
             layer_count,
             LayerState::Done,
@@ -659,6 +800,7 @@ fn demo_layers(
         };
 
         layers.push(LayerSpec {
+            number: layer_number,
             label,
             current_label: current,
             detail: detail_text,

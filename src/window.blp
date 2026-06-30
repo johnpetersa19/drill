@@ -23,28 +23,35 @@ template $DrillWindow : Adw.ApplicationWindow {
       }
     }
 
-    content: Gtk.Box {
+    content: Gtk.Paned main_paned {
       orientation: horizontal;
-      spacing: 0;
       hexpand: true;
       vexpand: true;
+      wide-handle: false;
+      position: 720;
+      resize-start-child: true;
+      resize-end-child: true;
+      shrink-start-child: false;
+      shrink-end-child: false;
 
-      Gtk.ScrolledWindow {
+      styles [
+        "main-split",
+      ]
+
+      start-child: Gtk.ScrolledWindow {
         hexpand: true;
         vexpand: true;
-        min-content-width: 520;
+        min-content-width: 360;
 
-        child: Adw.Clamp {
-          maximum-size: 760;
-          tightening-threshold: 560;
-
-          child: Gtk.Box {
+        child: Gtk.Box {
             orientation: vertical;
             spacing: 16;
-            margin-start: 24;
-            margin-end: 24;
-            margin-top: 24;
-            margin-bottom: 24;
+            margin-start: 16;
+            margin-end: 16;
+            margin-top: 16;
+            margin-bottom: 16;
+            hexpand: true;
+            vexpand: true;
 
             styles [
               "reading-panel",
@@ -75,6 +82,8 @@ template $DrillWindow : Adw.ApplicationWindow {
             }
 
             Adw.Bin project_tree_card {
+              vexpand: true;
+
               styles [
                 "card",
                 "drill-card",
@@ -84,10 +93,10 @@ template $DrillWindow : Adw.ApplicationWindow {
               child: Gtk.Box {
                 orientation: vertical;
                 spacing: 12;
-                margin-start: 16;
-                margin-end: 16;
-                margin-top: 16;
-                margin-bottom: 16;
+                margin-start: 12;
+                margin-end: 12;
+                margin-top: 12;
+                margin-bottom: 12;
 
                 Gtk.Label {
                   label: _("Project tree");
@@ -99,8 +108,7 @@ template $DrillWindow : Adw.ApplicationWindow {
                 }
 
                 Gtk.ScrolledWindow {
-                  min-content-height: 340;
-                  max-content-height: 520;
+                  min-content-height: 260;
                   hscrollbar-policy: never;
                   vexpand: true;
 
@@ -133,7 +141,7 @@ template $DrillWindow : Adw.ApplicationWindow {
                           orientation: horizontal;
                           spacing: 12;
 
-                          Gtk.Box read_status_dot {
+                          Adw.Bin read_status_dot {
                             width-request: 14;
                             height-request: 14;
                             valign: center;
@@ -172,26 +180,13 @@ template $DrillWindow : Adw.ApplicationWindow {
               };
             }
           };
-        };
-      }
+      };
 
-      Gtk.Separator {
-        orientation: vertical;
-      }
-
-      Adw.Clamp {
-        maximum-size: 460;
-        tightening-threshold: 420;
-        valign: center;
-        halign: center;
-        hexpand: false;
-        vexpand: true;
-        margin-start: 24;
-        margin-end: 24;
-
-        child: Gtk.Box {
+      end-child: Gtk.Box {
           orientation: vertical;
           spacing: 20;
+          margin-start: 16;
+          margin-end: 16;
           margin-top: 24;
           margin-bottom: 24;
           halign: center;
@@ -237,8 +232,7 @@ template $DrillWindow : Adw.ApplicationWindow {
             };
 
             [overlay]
-            Gtk.Box onion_core {
-              orientation: horizontal;
+            Adw.Bin onion_core {
               halign: center;
               valign: center;
               hexpand: false;
@@ -339,8 +333,7 @@ template $DrillWindow : Adw.ApplicationWindow {
               ]
             }
           }
-        };
-      }
+      };
     };
   };
 }
