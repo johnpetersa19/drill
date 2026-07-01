@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "signatures": [
+    {
+      "id": "uefi_firmware_volume_header",
+      "name": "UEFI Firmware Volume",
+      "node_type": "firmware",
+      "subtype": "UEFI_FV",
+      "magic": "5F 46 56 48",
+      "offset": "any",
+      "detector": "uefi_extract_detector",
+      "dependency": "external",
+      "external_tool": "uefiextract",
+      "base_confidence": 70,
+      "validation_required": false,
+      "description": "UEFI firmware volume marker handled through the UEFIExtract external adapter"
+    },
+    {
+      "id": "zip_local_file_header",
+      "name": "ZIP/JAR",
+      "node_type": "container",
+      "subtype": "ZIP",
+      "magic": "50 4B 03 04",
+      "offset": "any",
+      "detector": "zip_detector",
+      "dependency": "zip",
+      "base_confidence": 60,
+      "validation_required": true,
+      "description": "ZIP container, also used by JAR, APK, and other ZIP-based formats"
+    },
+    {
+      "id": "png_signature",
+      "name": "PNG",
+      "node_type": "image",
+      "subtype": "PNG",
+      "magic": "89 50 4E 47 0D 0A 1A 0A",
+      "offset": "any",
+      "detector": "png_detector",
+      "dependency": "image",
+      "base_confidence": 70,
+      "validation_required": true,
+      "description": "PNG image"
+    },
+    {
+      "id": "elf_signature",
+      "name": "ELF",
+      "node_type": "executable",
+      "subtype": "ELF",
+      "magic": "7F 45 4C 46",
+      "offset": 0,
+      "detector": "elf_detector",
+      "dependency": "internal",
+      "base_confidence": 80,
+      "validation_required": true,
+      "description": "Linux or Unix ELF executable"
+    },
+    {
+      "id": "java_class",
+      "name": "Java Class",
+      "node_type": "bytecode",
+      "subtype": "JVM_CLASS",
+      "magic": "CA FE BA BE",
+      "offset": 0,
+      "detector": "java_class_detector",
+      "dependency": "internal",
+      "base_confidence": 75,
+      "validation_required": true,
+      "description": "Java .class file"
+    },
+    {
+      "id": "gzip_signature",
+      "name": "GZIP",
+      "node_type": "compression",
+      "subtype": "GZIP",
+      "magic": "1F 8B",
+      "offset": "any",
+      "detector": "generic_magic_detector",
+      "dependency": "internal",
+      "base_confidence": 65,
+      "validation_required": true,
+      "description": "GZIP stream or file"
+    },
+    {
+      "id": "bmp_signature",
+      "name": "BMP",
+      "node_type": "image",
+      "subtype": "BMP",
+      "magic": "42 4D",
+      "offset": "any",
+      "detector": "bmp_detector",
+      "dependency": "internal",
+      "base_confidence": 60,
+      "validation_required": true,
+      "description": "BMP image"
+    }
+  ]
+}

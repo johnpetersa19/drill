@@ -26,6 +26,19 @@ use gtk::{gio, glib};
 use crate::config::VERSION;
 use crate::DrillWindow;
 
+const MIN_PREFERENCES_WIDTH: i32 = 520;
+const MIN_PREFERENCES_HEIGHT: i32 = 360;
+const MAX_PREFERENCES_WIDTH: i32 = 1400;
+const MAX_PREFERENCES_HEIGHT: i32 = 1000;
+
+fn database_path_subtitle(path: &str) -> String {
+    if path.is_empty() {
+        gettext("No local database selected")
+    } else {
+        path.to_string()
+    }
+}
+
 mod imp {
     use super::*;
 
@@ -126,7 +139,140 @@ impl DrillApplication {
         let preferences: adw::PreferencesDialog = builder
             .object("preferences")
             .expect("preferences-dialog.ui must contain an object named 'preferences'");
+        let database_group: adw::PreferencesGroup =
+            builder.object("database_preferences_group").expect(
+                "preferences-dialog.ui must contain an object named 'database_preferences_group'",
+            );
+
+        let settings = gio::Settings::new("io.github.johnpetersa.Drill");
+        self.restore_preferences_size(&preferences, &settings);
+        self.setup_preferences_size_memory(&preferences, &settings);
+        self.setup_database_preferences(&window, &database_group, &settings);
+
         preferences.present(Some(&window));
+    }
+
+    fn restore_preferences_size(
+        &self,
+        preferences: &adw::PreferencesDialog,
+        settings: &gio::Settings,
+    ) {
+        let width = settings
+            .int("preferences-width")
+            .clamp(MIN_PREFERENCES_WIDTH, MAX_PREFERENCES_WIDTH);
+        let height = settings
+            .int("preferences-height")
+            .clamp(MIN_PREFERENCES_HEIGHT, MAX_PREFERENCES_HEIGHT);
+
+        preferences.set_follows_content_size(false);
+        preferences.set_content_width(width);
+        preferences.set_content_height(height);
+    }
+
+    fn setup_preferences_size_memory(
+        &self,
+        preferences: &adw::PreferencesDialog,
+        settings: &gio::Settings,
+    ) {
+        let settings_for_width = settings.clone();
+        preferences.connect_content_width_notify(move |dialog| {
+            let width = dialog
+                .content_width()
+                .clamp(MIN_PREFERENCES_WIDTH, MAX_PREFERENCES_WIDTH);
+            let _ = settings_for_width.set_int("preferences-width", width);
+        });
+
+        let settings_for_height = settings.clone();
+        preferences.connect_content_height_notify(move |dialog| {
+            let height = dialog
+                .content_height()
+                .clamp(MIN_PREFERENCES_HEIGHT, MAX_PREFERENCES_HEIGHT);
+            let _ = settings_for_height.set_int("preferences-height", height);
+        });
+    }
+
+    fn setup_database_preferences(
+        &self,
+        window: &gtk::Window,
+        database_group: &adw::PreferencesGroup,
+        settings: &gio::Settings,
+    ) {
+        let source_model = gtk::StringList::new(&[
+            &gettext("Built-in Cheat database"),
+            &gettext("Local JSON database"),
+        ]);
+        let source_row = adw::ComboRow::builder()
+            .title(&gettext("Database source"))
+            .subtitle(&gettext("Select where Drill loads file signatures from."))
+            .model(&source_model)
+            .selected(if settings.string("signature-database-source") == "local" {
+                1
+            } else {
+                0
+            })
+            .build();
+
+        let path_row = adw::ActionRow::builder()
+            .title(&gettext("Local database file"))
+            .subtitle(&database_path_subtitle(
+                &settings.string("signature-database-path"),
+            ))
+            .build();
+        let choose_button = gtk::Button::with_label(&gettext("Choose JSON"));
+        choose_button.set_valign(gtk::Align::Center);
+        path_row.add_suffix(&choose_button);
+        path_row.set_activatable_widget(Some(&choose_button));
+        path_row.set_sensitive(source_row.selected() == 1);
+
+        let settings_for_source = settings.clone();
+        let path_row_for_source = path_row.clone();
+        source_row.connect_selected_notify(move |row| {
+            let is_local = row.selected() == 1;
+            let source = if is_local { "local" } else { "builtin" };
+            let _ = settings_for_source.set_string("signature-database-source", source);
+            path_row_for_source.set_sensitive(is_local);
+        });
+
+        let settings_for_file = settings.clone();
+        let path_row_for_file = path_row.clone();
+        let window_for_file = window.clone();
+        choose_button.connect_clicked(move |_| {
+            let dialog = gtk::FileDialog::builder()
+                .title(&gettext("Choose Signature Database"))
+                .accept_label(&gettext("Use Database"))
+                .modal(true)
+                .build();
+
+            let json_filter = gtk::FileFilter::new();
+            json_filter.set_name(Some(&gettext("JSON files")));
+            json_filter.add_mime_type("application/json");
+            json_filter.add_pattern("*.json");
+
+            let filters = gio::ListStore::new::<gtk::FileFilter>();
+            filters.append(&json_filter);
+            dialog.set_filters(Some(&filters));
+
+            let settings = settings_for_file.clone();
+            let path_row = path_row_for_file.clone();
+            dialog.open(
+                Some(&window_for_file),
+                gio::Cancellable::NONE,
+                move |result| {
+                    if let Ok(file) = result {
+                        if let Some(path) = file.path() {
+                            let path = path.to_string_lossy().to_string();
+                            let _ = settings.set_string("signature-database-source", "local");
+                            let _ = settings.set_string("signature-database-path", &path);
+                            path_row.set_subtitle(&database_path_subtitle(&path));
+                            path_row.set_sensitive(true);
+                        }
+                    }
+                },
+            );
+        });
+
+        database_group.add(&source_row);
+        database_group.add(&path_row);
     }
 
     fn show_shortcuts(&self) {

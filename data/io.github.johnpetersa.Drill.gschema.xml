@@ -16,5 +16,25 @@
 			<summary>Window maximized state</summary>
 			<description>Whether the main window was maximized when the application last closed.</description>
 		</key>
+		<key name="preferences-width" type="i">
+			<default>720</default>
+			<summary>Preferences width</summary>
+			<description>The last saved preferences dialog content width.</description>
+		</key>
+		<key name="preferences-height" type="i">
+			<default>520</default>
+			<summary>Preferences height</summary>
+			<description>The last saved preferences dialog content height.</description>
+		</key>
+		<key name="signature-database-source" type="s">
+			<default>'builtin'</default>
+			<summary>Signature database source</summary>
+			<description>Whether Drill uses the built-in signature database or a local JSON database selected by the user.</description>
+		</key>
+		<key name="signature-database-path" type="s">
+			<default>''</default>
+			<summary>Local signature database path</summary>
+			<description>The path to the user-selected local signature database JSON file.</description>
+		</key>
 	</schema>
 </schemalist>

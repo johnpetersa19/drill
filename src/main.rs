@@ -18,10 +18,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+mod adapters;
 mod analysis;
 mod application;
 mod config;
 mod detectors;
+mod drill_engine;
 mod engine;
 mod icon_catalog;
 mod output;

@@ -1647,7 +1647,7 @@ msgid "Main Menu"
 msgstr ""
 
 #: src/toolbar.blp:122
-msgid "Clonar repositório"
+msgid "Clone Repository"
 msgstr ""
 
 #: src/toolbar.blp:198
@@ -1734,4 +1734,3 @@ msgstr ""
 #: src/window.blp:186
 msgid "_About Temporal Explorer"
 msgstr ""
-

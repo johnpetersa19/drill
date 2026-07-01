@@ -357,7 +357,7 @@ fi
 GSCHEMA_COUNT=$(count_po_entries "$TMP/gschema.pot")
 echo "   → gschema.pot: $GSCHEMA_COUNT entries"
 
-# ── 5. Merge via Python (sem dependencia de msgcat) ──────────────────────────
+# ── 5. Merge via Python (without depending on msgcat) ────────────────────────
 echo "[5/7] Merging partial POT files..."
 python3 - "$TMP/rust.pot" "$TMP/blp.entries" "$TMP/ui.pot" \
          "$TMP/desktop.pot" "$TMP/metainfo.pot" "$TMP/gschema.pot" \

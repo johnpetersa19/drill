@@ -3,20 +3,17 @@ using Adw 1;
 
 Adw.PreferencesDialog preferences {
   title: _("Preferences");
+  content-width: 720;
+  content-height: 520;
+  follows-content-size: false;
 
   Adw.PreferencesPage {
     title: _("General");
     icon-name: "preferences-system-symbolic";
 
-    Adw.PreferencesGroup {
-      title: _("Preferences");
-      description: _("Preferences not yet implemented.");
-
-      Adw.ActionRow {
-        title: _("Analysis settings");
-        subtitle: _("This window is ready for future Drill options.");
-        activatable: false;
-      }
+    Adw.PreferencesGroup database_preferences_group {
+      title: _("Signature database");
+      description: _("Choose whether Drill uses its built-in Cheat database or a local JSON database.");
     }
   }
 }
