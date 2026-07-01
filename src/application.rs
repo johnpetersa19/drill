@@ -121,25 +121,22 @@ impl DrillApplication {
 
     fn show_preferences(&self) {
         let window = self.active_window().unwrap();
-        // TODO: implementar PreferencesDialog (Adw.PreferencesDialog)
-        // Placeholder para nao deixar a acao sem resposta.
-        let dialog = adw::AlertDialog::builder()
-            .heading(&gettext("Preferences"))
-            .body(&gettext("Preferences not yet implemented."))
-            .build();
-        dialog.add_response("ok", &gettext("OK"));
-        dialog.set_default_response(Some("ok"));
-        dialog.present(Some(&window));
+        let builder =
+            gtk::Builder::from_resource("/io/github/johnpetersa/Drill/preferences-dialog.ui");
+        let preferences: adw::PreferencesDialog = builder
+            .object("preferences")
+            .expect("preferences-dialog.ui must contain an object named 'preferences'");
+        preferences.present(Some(&window));
     }
 
     fn show_shortcuts(&self) {
         let window = self.active_window().unwrap();
-        // ShortcutsWindow gerado a partir do shortcuts-dialog.blp via gresource.
+        // ShortcutsWindow generated from shortcuts-dialog.blp via gresource.
         let builder =
             gtk::Builder::from_resource("/io/github/johnpetersa/Drill/shortcuts-dialog.ui");
         let shortcuts_window: gtk::ShortcutsWindow = builder
             .object("shortcuts")
-            .expect("shortcuts-dialog.ui deve conter um objeto chamado 'shortcuts'");
+            .expect("shortcuts-dialog.ui must contain an object named 'shortcuts'");
         shortcuts_window.set_transient_for(Some(window.downcast_ref::<gtk::Window>().unwrap()));
         shortcuts_window.present();
     }

@@ -1,2 +1,2 @@
-// Detectores: PE/COFF, ELF, Mach-O, .class Java, DEX Android
-// TODO: implementar
+// Detectors: PE/COFF, ELF, Mach-O, Java .class, Android DEX
+// TODO: implement

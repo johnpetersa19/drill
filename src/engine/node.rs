@@ -1,2 +1,2 @@
-// Definição de Node, NodeType, Confidence
-// TODO: implementar
+// Node, NodeType, and Confidence definitions
+// TODO: implement

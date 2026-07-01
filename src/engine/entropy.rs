@@ -1,2 +1,2 @@
-// Mapa de entropia de Shannon em janela deslizante
-// TODO: implementar
+// Shannon entropy map using a sliding window
+// TODO: implement

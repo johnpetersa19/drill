@@ -8,10 +8,12 @@ blueprints = custom_target(
   input: files(
     'window.blp',
     'shortcuts-dialog.blp',
+    'preferences-dialog.blp',
   ),
   output: [
     'window.ui',
     'shortcuts-dialog.ui',
+    'preferences-dialog.ui',
   ],
   command: [
     blueprint_compiler,

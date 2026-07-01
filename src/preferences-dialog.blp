@@ -1,0 +1,22 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adw.PreferencesDialog preferences {
+  title: _("Preferences");
+
+  Adw.PreferencesPage {
+    title: _("General");
+    icon-name: "preferences-system-symbolic";
+
+    Adw.PreferencesGroup {
+      title: _("Preferences");
+      description: _("Preferences not yet implemented.");
+
+      Adw.ActionRow {
+        title: _("Analysis settings");
+        subtitle: _("This window is ready for future Drill options.");
+        activatable: false;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-// Motor recursivo de análise binária
-// Submódulos: node, tree, entropy, manifest
+// Recursive binary analysis engine
+// Submodules: node, tree, entropy, manifest
 
 pub mod entropy;
 pub mod manifest;

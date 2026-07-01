@@ -1,2 +1,2 @@
-// Detectores de mídia (folhas): imagem, áudio, vídeo, fonte, texto
-// TODO: implementar
+// Media detectors (leaves): image, audio, video, font, text
+// TODO: implement

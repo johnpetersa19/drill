@@ -8,9 +8,9 @@ gettext-rs = { version = "0.7", features = ["gettext-system"] }
 gtk = { version = "0.9", package = "gtk4", features = ["gnome_47"] }
 adw = { package = "libadwaita", version = "0.7", features = ["v1_6"] }
 
-# Dependências futuras do engine devem voltar conforme os módulos forem
-# implementados. Mantê-las ativas agora faz um app pequeno compilar dezenas de
-# crates pesadas sem uso.
+# Future engine dependencies should be re-enabled as the modules are
+# implemented. Keeping them active now makes a small app compile dozens of
+# heavy unused crates.
 #
 # memmap2 = "0.9"
 # sha2 = "0.10"

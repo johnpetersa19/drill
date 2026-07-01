@@ -1,5 +1,5 @@
-// Registro de detectores plugáveis
-// trait Detector + implementações por categoria
+// Pluggable detector registry
+// Detector trait + implementations by category
 
 pub mod architecture;
 pub mod compression;

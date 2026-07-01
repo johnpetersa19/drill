@@ -1,2 +1,2 @@
-// Geração de saída: esqueleto/, nos/, relatórios de texto a partir do manifesto
-// TODO: implementar
+// Output generation: skeleton/, nodes/, and text reports from the manifest
+// TODO: implement

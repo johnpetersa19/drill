@@ -1,4 +1,4 @@
-// LayerModel — onion layer model
+// LayerModel - onion layer model
 // Represents each layer: name, type, state
 //
 // Initial layers:

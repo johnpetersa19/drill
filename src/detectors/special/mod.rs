@@ -1,2 +1,2 @@
-// Detectores especiais: ACPI, X.509, TTF/OTF, SMBIOS, microcódigo, NVRAM
-// TODO: implementar
+// Special detectors: ACPI, X.509, TTF/OTF, SMBIOS, microcode, NVRAM
+// TODO: implement

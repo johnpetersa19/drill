@@ -1,2 +1,2 @@
-// Análise recursiva da árvore de nós com limites de segurança
-// TODO: implementar
+// Recursive node tree analysis with safety limits
+// TODO: implement
