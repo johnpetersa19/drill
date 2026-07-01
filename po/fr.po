@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: drill 0.1.0\n"
-"POT-Creation-Date: 2026-06-30 20:54-0300\n"
+"POT-Creation-Date: 2026-07-01 01:14-0300\n"
 "PO-Revision-Date: 2026-06-29 20:32-0300\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -11,20 +11,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/application.rs:115
-msgid "translator-credits"
-msgstr ""
-
-#: src/application.rs:127
-msgid "Preferences"
+#: src/application.rs:36
+msgid "No local database selected"
 msgstr ""
 
 #: src/application.rs:128
-msgid "Preferences not yet implemented."
+msgid "translator-credits"
 msgstr ""
 
-#: src/application.rs:130
-msgid "OK"
+#: src/application.rs:201
+msgid "Built-in Cheat database"
+msgstr ""
+
+#: src/application.rs:202
+msgid "Local JSON database"
+msgstr ""
+
+#: src/application.rs:205
+msgid "Database source"
+msgstr ""
+
+#: src/application.rs:206
+msgid "Select where Drill loads file signatures from."
+msgstr ""
+
+#: src/application.rs:216
+msgid "Local database file"
+msgstr ""
+
+#: src/application.rs:221
+msgid "Choose JSON"
+msgstr ""
+
+#: src/application.rs:241
+msgid "Choose Signature Database"
+msgstr ""
+
+#: src/application.rs:242
+msgid "Use Database"
+msgstr ""
+
+#: src/application.rs:247
+msgid "JSON files"
 msgstr ""
 
 #: src/window.rs:56
@@ -117,6 +145,24 @@ msgstr ""
 
 #: src/window.rs:856
 msgid "Layer %d in the analysis chain."
+msgstr ""
+
+#: src/preferences-dialog.blp:5
+msgid "Preferences"
+msgstr ""
+
+#: src/preferences-dialog.blp:11
+msgid "General"
+msgstr ""
+
+#: src/preferences-dialog.blp:15
+msgid "Signature database"
+msgstr ""
+
+#: src/preferences-dialog.blp:16
+msgid ""
+"Choose whether Drill uses its built-in Cheat database or a local JSON "
+"database."
 msgstr ""
 
 #: src/shortcuts-dialog.blp:6
@@ -233,4 +279,32 @@ msgstr ""
 
 #: data/io.github.johnpetersa.Drill.gschema.xml:17
 msgid "Whether the main window was maximized when the application last closed."
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:21
+msgid "Preferences width"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:22
+msgid "The last saved preferences dialog content width."
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:26
+msgid "Preferences height"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:27
+msgid "The last saved preferences dialog content height."
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:31
+msgid "Signature database source"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:36
+msgid "Local signature database path"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:37
+msgid "The path to the user-selected local signature database JSON file."
 msgstr ""

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: drill 0.1.0\n"
-"POT-Creation-Date: 2026-06-30 20:54-0300\n"
+"POT-Creation-Date: 2026-07-01 01:14-0300\n"
 "PO-Revision-Date: 2026-06-30 20:55-0300\n"
 "Last-Translator: John Peter Sa <johnpetersa19@users.noreply.github.com>\n"
 "Language-Team: Português do Brasil\n"
@@ -12,21 +12,49 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: src/application.rs:115
+#: src/application.rs:36
+msgid "No local database selected"
+msgstr ""
+
+#: src/application.rs:128
 msgid "translator-credits"
 msgstr "John Peter Sa"
 
-#: src/application.rs:127
-msgid "Preferences"
-msgstr "Preferências"
+#: src/application.rs:201
+msgid "Built-in Cheat database"
+msgstr ""
 
-#: src/application.rs:128
-msgid "Preferences not yet implemented."
-msgstr "Preferências ainda não implementadas."
+#: src/application.rs:202
+msgid "Local JSON database"
+msgstr ""
 
-#: src/application.rs:130
-msgid "OK"
-msgstr "OK"
+#: src/application.rs:205
+msgid "Database source"
+msgstr ""
+
+#: src/application.rs:206
+msgid "Select where Drill loads file signatures from."
+msgstr ""
+
+#: src/application.rs:216
+msgid "Local database file"
+msgstr ""
+
+#: src/application.rs:221
+msgid "Choose JSON"
+msgstr ""
+
+#: src/application.rs:241
+msgid "Choose Signature Database"
+msgstr ""
+
+#: src/application.rs:242
+msgid "Use Database"
+msgstr ""
+
+#: src/application.rs:247
+msgid "JSON files"
+msgstr ""
 
 #: src/window.rs:56
 msgid "No project tree yet."
@@ -120,6 +148,24 @@ msgstr "Camada atual: %d"
 #: src/window.rs:856
 msgid "Layer %d in the analysis chain."
 msgstr "Camada %d na cadeia de análise."
+
+#: src/preferences-dialog.blp:5
+msgid "Preferences"
+msgstr "Preferências"
+
+#: src/preferences-dialog.blp:11
+msgid "General"
+msgstr ""
+
+#: src/preferences-dialog.blp:15
+msgid "Signature database"
+msgstr ""
+
+#: src/preferences-dialog.blp:16
+msgid ""
+"Choose whether Drill uses its built-in Cheat database or a local JSON "
+"database."
+msgstr ""
 
 #: src/shortcuts-dialog.blp:6
 msgid "Shortcuts"
@@ -238,3 +284,41 @@ msgid "Whether the main window was maximized when the application last closed."
 msgstr ""
 "Se a janela principal estava maximizada quando o aplicativo foi fechado pela "
 "última vez."
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:21
+#, fuzzy
+msgid "Preferences width"
+msgstr "Preferências"
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:22
+#, fuzzy
+msgid "The last saved preferences dialog content width."
+msgstr "A última largura salva da janela principal."
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:26
+#, fuzzy
+msgid "Preferences height"
+msgstr "Preferências"
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:27
+#, fuzzy
+msgid "The last saved preferences dialog content height."
+msgstr "A última altura salva da janela principal."
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:31
+msgid "Signature database source"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:36
+msgid "Local signature database path"
+msgstr ""
+
+#: data/io.github.johnpetersa.Drill.gschema.xml:37
+msgid "The path to the user-selected local signature database JSON file."
+msgstr ""
+
+#~ msgid "Preferences not yet implemented."
+#~ msgstr "Preferências ainda não implementadas."
+
+#~ msgid "OK"
+#~ msgstr "OK"
